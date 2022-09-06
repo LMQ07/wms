@@ -27,14 +27,20 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
-
+// router.beforeEach((to,from,next)=>{
+//   const obj = {title:to.meta.title,path:to.path}
+//   store.commit('app/ADD_CURRENTPAGE',obj)
+//   console.log(to);
+//   next()
+// })
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
+import GetRoute from './layout/mixin/GetRoute'
+Vue.mixin(GetRoute)
 new Vue({
   el: '#app',
   router,
