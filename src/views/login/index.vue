@@ -6,28 +6,28 @@
           <img src="@/assets/loginTitle.png" alt="">
         </div>
         <div class="form" style="margin-top:50px">
-          <el-form ref="form" :model="loginForm">
-            <el-form-item size="medium">
+          <el-form ref="form" :model="loginForm" :rules="rules">
+            <el-form-item size="medium" prop="username">
               <div class="iconLogin">
                 <img src="@/assets/loginphone.png" alt="">
               </div>
-              <el-input v-model="loginForm.username" />
+              <el-input v-model="loginForm.username" placeholder="请输入账号名称" />
             </el-form-item>
-            <el-form-item size="medium">
+            <el-form-item size="medium" prop="password">
               <div class="iconLogin">
                 <img src="@/assets/loginlock.png" alt="">
               </div>
-              <el-input v-model="loginForm.password" type="password" :show-password="true" />
+              <el-input v-model="loginForm.password" type="password" :show-password="true" placeholder="请输入密码" />
             </el-form-item>
             <div class="rememberPassword">
-              <input v-model="isRemember" type="checkbox" class="isRemember">
-              <span class="tip">
+              <input v-model="isRemember" type="checkbox" class="isRemember" :class="isRemember ? 'yellow': ''" @change="changeRemember">
+              <span class="tip" :class="isRemember ? 'isYellow': ''">
                 记住密码
               </span>
             </div>
             <el-form-item>
               <div class="loginBtn">
-                <el-button>立即登入</el-button>
+                <el-button @click="submit">立即登入</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -39,18 +39,57 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Login',
   data() {
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
-      isRemember: false
+      isRemember: '',
+      rules: {
+        username: [{ required: true, message: '请输入', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入', trigger: 'blur' }]
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['isRememberNot', 'userInfo'])
+  },
+  watch: {
+    isRememberNot: {
+      immediate: true,
+      handler(val) {
+        this.isRemember = val
+      }
+    },
+    userInfo: {
+      immediate: true,
+      handler(val) {
+        this.loginForm.username = val.username
+        this.loginForm.password = val.password
+      }
+    }
+  },
+  methods: {
+    async submit() {
+      try {
+        await this.$refs.form.validate()
+        this.$store.dispatch('user/isLogin', { ...this.loginForm, isRemember: this.isRemember })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async changeRemember() {
+      try {
+        await this.$refs.form.validate()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
-
 }
 </script>
 
@@ -99,16 +138,15 @@ $light_gray:#eee;
       display: flex;
       align-items: flex-end;
       border-radius: 7px;
-      overflow: hidden;
     }
     ::v-deep .el-input__inner{
       height: 48px;
       background-color: #f8f5f5;
       border: 1px solid #f8f5f5;
       color: black;
-      :hover{
-        border: 1px solid black;
-      }
+    }
+    ::v-deep .el-form-item__error{
+      left:60px
     }
     .divTitle{
     margin-left: 124px;
@@ -122,9 +160,16 @@ $light_gray:#eee;
       margin: 0 60px 20px;
       display: flex;
       align-items: center;
+      .isYellow{
+        color: #ffB200;
+        font-weight: 600;
+      }
       .isRemember{
         border: 1px solid #dcdfe6;
         border-radius: 2px;
+        &.yellow{
+          background-color: #ffB200;
+        }
       }
       .tip{
       padding-left: 10px;
