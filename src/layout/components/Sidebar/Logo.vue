@@ -5,9 +5,9 @@
         <img v-if="logo" :src="logo" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link> -->
-      <router-link key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title">{{ title }}</h1>
+
+      <router-link key="expand" class="sidebar-logo-link" to="/" style="display:flex">
+        <img src="@/assets/layout/logo@2x.2c4f2c76.png">
       </router-link>
     </transition>
   </div>
@@ -15,20 +15,20 @@
 
 <script>
 export default {
-  name: "SidebarLogo",
+  name: 'SidebarLogo',
   props: {
     collapse: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      title: "Vue Admin Template",
-      logo: "https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png",
-    };
-  },
-};
+      title: 'Vue Admin Template',
+      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,16 +44,21 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 100px;
   line-height: 50px;
-  background: #2b2f3a;
+  background: #fff;
   text-align: center;
   overflow: hidden;
-
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img{
+      width: 150px;
+      height: 64px
+    }
     & .sidebar-logo {
       width: 32px;
       height: 32px;

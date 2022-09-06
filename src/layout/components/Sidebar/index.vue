@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Logo from "./Logo";
-import SidebarItem from "./SidebarItem";
-import variables from "@/styles/variables.scss";
+import { mapGetters } from 'vuex'
+import Logo from './Logo'
+import SidebarItem from './SidebarItem'
+import variables from '@/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
@@ -49,26 +49,26 @@ export default {
       // console.log(this.$route);
       // console.log(index);
       // console.log(indexPath);
-    },
+    }
   },
   computed: {
-    ...mapGetters(["sidebar", "navArr", "currentPage"]),
+    ...mapGetters(['sidebar', 'navArr', 'currentPage']),
     routes() {
-      return this.$router.options.routes;
+      return this.$router.options.routes
     },
     activeMenu() {
-      const route = this.$route;
-      const { meta, path } = route;
+      const route = this.$route
+      const { meta, path } = route
       // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
-        return meta.activeMenu;
+        return meta.activeMenu
       }
-      return path;
+      return path
     },
 
     variables() {
-      return variables;
-    },
-  },
-};
+      return variables
+    }
+  }
+}
 </script>
