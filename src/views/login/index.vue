@@ -7,23 +7,29 @@
         </div>
         <div class="form" style="margin-top:50px">
           <el-form ref="form" :model="loginForm">
-            <el-form-item>
+            <el-form-item size="medium">
               <div class="iconLogin">
                 <img src="@/assets/loginphone.png" alt="">
               </div>
               <el-input v-model="loginForm.username" />
             </el-form-item>
-            <el-form-item>
+            <el-form-item size="medium">
               <div class="iconLogin">
                 <img src="@/assets/loginlock.png" alt="">
               </div>
-              <el-input v-model="loginForm.password" />
+              <el-input v-model="loginForm.password" type="password" :show-password="true" />
             </el-form-item>
-            <er-form-item>
-              <div>
+            <div class="rememberPassword">
+              <input v-model="isRemember" type="checkbox" class="isRemember">
+              <span class="tip">
+                记住密码
+              </span>
+            </div>
+            <el-form-item>
+              <div class="loginBtn">
                 <el-button>立即登入</el-button>
               </div>
-            </er-form-item>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -40,7 +46,8 @@ export default {
       loginForm: {
         username: 'admin',
         password: '111111'
-      }
+      },
+      isRemember: false
     }
   }
 
@@ -91,12 +98,17 @@ $light_gray:#eee;
       margin: 0 60px 20px;
       display: flex;
       align-items: flex-end;
+      border-radius: 7px;
+      overflow: hidden;
     }
     ::v-deep .el-input__inner{
       height: 48px;
       background-color: #f8f5f5;
-      border:none;
+      border: 1px solid #f8f5f5;
       color: black;
+      :hover{
+        border: 1px solid black;
+      }
     }
     .divTitle{
     margin-left: 124px;
@@ -105,6 +117,34 @@ $light_gray:#eee;
       width: 150px;
     height: 64px;
      }
+    }
+    .rememberPassword{
+      margin: 0 60px 20px;
+      display: flex;
+      align-items: center;
+      .isRemember{
+        border: 1px solid #dcdfe6;
+        border-radius: 2px;
+      }
+      .tip{
+      padding-left: 10px;
+      font-size: 14px;
+      }
+    }
+    .loginBtn{
+      width: 100%;
+      .el-button{
+        width: 100%;
+        height: 50px;
+        background: #ffb200;
+        border-radius: 8px;
+        box-shadow: 0 2px 9px 1px rgb(255 178 0 / 47%);
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        color: #332929;
+        line-height: 22px;
+      }
     }
     }
     .divRight{
