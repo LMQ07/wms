@@ -123,6 +123,29 @@ $light_gray:#eee;
     ::v-deep .el-form-item__content{
       background-color: #f8f5f5;
     }
+    input[type=checkbox]::after{
+            position: absolute;
+            top: 0;
+            border: none;
+            /* background-color: #ff670c; */
+            color: #fff;
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            visibility: visible;
+            padding-left: 0px;
+            margin-top: 370px;
+            text-align: center;
+            content: ' ';
+            border-radius: 1px
+        }
+        input[type=checkbox]:checked::after{
+            background-color: #ffB200;
+            border-color: #ffB200;
+            content: "✓";
+            font-size: 12px;
+            font-weight: bold;
+        }
     .iconLogin{
       display: flex;
       align-items: flex-end;
