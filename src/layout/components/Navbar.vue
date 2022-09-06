@@ -4,16 +4,16 @@
       <!-- class="navItem" -->
       <li
         v-for="(item, index) in navArr"
-        :class="currentIndex == index ? 'active navItem' : 'navItem'"
         :key="item.path"
+        :class="currentIndex == index ? 'active navItem' : 'navItem'"
         @click="goOtherPage(item.path, index)"
       >
         {{ item.title }}
         <i
           v-if="index !== 0"
-          @click.stop="del(index)"
           class="el-icon-close"
-        ></i>
+          @click.stop="del(index)"
+        />
       </li>
     </ul>
     <div class="right-menu">
@@ -48,51 +48,44 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
-
+import { mapGetters } from 'vuex'
 export default {
-  components: {
-    Breadcrumb,
-    Hamburger,
-  },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "navArr", "currentIndex"]),
+    ...mapGetters(['sidebar', 'avatar', 'navArr', 'currentIndex'])
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch("user/logout");
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     del(index) {
       // index 8
       // length 7
-      this.$store.commit("app/DELET_NAVBARITEM", index);
-      let path = "";
-      if (index == this.navArr.length) {
-        this.$store.commit("app/CHANGE_CURRENTINDEX", index - 1);
-        path = this.navArr[this.currentIndex].path;
-      } else if (index == this.currentIndex) {
-        this.$store.commit("app/CHANGE_CURRENTINDEX", this.navArr.length - 1);
-        path = this.navArr[this.currentIndex].path;
+      this.$store.commit('app/DELET_NAVBARITEM', index)
+      let path = ''
+      if (index === this.navArr.length) {
+        this.$store.commit('app/CHANGE_CURRENTINDEX', index - 1)
+        path = this.navArr[this.currentIndex].path
+      } else if (index === this.currentIndex) {
+        this.$store.commit('app/CHANGE_CURRENTINDEX', this.navArr.length - 1)
+        path = this.navArr[this.currentIndex].path
       } else if (this.currentIndex > index) {
-        this.$store.commit("app/CHANGE_CURRENTINDEX", this.currentIndex - 1);
-        path = this.navArr[this.currentIndex].path;
+        this.$store.commit('app/CHANGE_CURRENTINDEX', this.currentIndex - 1)
+        path = this.navArr[this.currentIndex].path
       }
-      this.$router.push(path);
+      this.$router.push(path)
     },
 
     goOtherPage(path, index) {
-      console.log(index);
-      this.$store.commit("app/CHANGE_CURRENTINDEX", index);
-      this.$router.push(path);
-    },
-  },
-};
+      console.log(index)
+      this.$store.commit('app/CHANGE_CURRENTINDEX', index)
+      this.$router.push(path)
+    }
+  }
+}
 </script>
 
 <style lang="scss">
