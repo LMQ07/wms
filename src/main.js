@@ -45,6 +45,8 @@ router.beforeEach((to,from,next)=>{
   }
   next()
 })
+import component from '@/components'
+Vue.use(component)
 new Vue({
   el: '#app',
   router,
