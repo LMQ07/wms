@@ -7,6 +7,7 @@ const state = {
   // },
   navArr:[{title:'工作台',path:'/dashboard'}],
   currentPage:{},
+  currentIndex:0,
   device: 'desktop'
 }
 
@@ -19,6 +20,9 @@ const mutations = {
   },
   ADD_CURRENTPAGE:(state,newitem)=>{
     state.currentPage = newitem
+  },
+  CHANGE_CURRENTINDEX:(state,num)=>{
+    state.currentIndex = num
   }
   // TOGGLE_SIDEBAR: state => {
   //   state.sidebar.opened = !state.sidebar.opened

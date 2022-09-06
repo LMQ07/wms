@@ -1,14 +1,19 @@
 <template>
   <div class="navbar">
     <ul>
+      <!-- class="navItem" -->
       <li
-        class="navItem"
         v-for="(item, index) in navArr"
+        :class="currentIndex == index ? 'active navItem' : 'navItem'"
         :key="item.path"
-        @click="goOtherPage(item.path)"
+        @click="goOtherPage(item.path, index)"
       >
         {{ item.title }}
-        <i v-if="index !== 0" @click="del(index)" class="el-icon-close"></i>
+        <i
+          v-if="index !== 0"
+          @click.stop="del(index)"
+          class="el-icon-close"
+        ></i>
       </li>
     </ul>
     <div class="right-menu">
@@ -53,7 +58,7 @@ export default {
     Hamburger,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "navArr"]),
+    ...mapGetters(["sidebar", "avatar", "navArr", "currentIndex"]),
   },
   methods: {
     toggleSideBar() {
@@ -64,18 +69,33 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
     del(index) {
+      // index 8
+      // length 7
       this.$store.commit("app/DELET_NAVBARITEM", index);
-      console.log(index);
+      let path = "";
+      if (index == this.navArr.length) {
+        this.$store.commit("app/CHANGE_CURRENTINDEX", index - 1);
+        path = this.navArr[this.currentIndex].path;
+      } else if (index == this.currentIndex) {
+        this.$store.commit("app/CHANGE_CURRENTINDEX", this.navArr.length - 1);
+        path = this.navArr[this.currentIndex].path;
+      } else if (this.currentIndex > index) {
+        this.$store.commit("app/CHANGE_CURRENTINDEX", this.currentIndex - 1);
+        path = this.navArr[this.currentIndex].path;
+      }
+      this.$router.push(path);
     },
 
-    goOtherPage(path) {
+    goOtherPage(path, index) {
+      console.log(index);
+      this.$store.commit("app/CHANGE_CURRENTINDEX", index);
       this.$router.push(path);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .navbar {
   height: 64px;
   overflow: hidden;
@@ -85,6 +105,7 @@ export default {
   ul {
     margin: 0;
     display: flex;
+
     .navItem {
       height: 36px;
       line-height: 36px;
@@ -98,6 +119,9 @@ export default {
       color: #b5abab;
       font-weight: 400;
       font-family: PingFangSC, PingFangSC-Regular;
+      &.active {
+        color: #ffb200;
+      }
     }
   }
   .hamburger-container {
