@@ -35,13 +35,17 @@ Vue.config.productionTip = false
 router.beforeEach((to,from,next)=>{
   const navArr = store.getters.navArr
   const flag = navArr.some((item) => item.path == to.path);
-  if (!flag) {
+  if (!flag&&to.path!=='/login'&&to.path!=='/404') {
         // this.navArr.push(this.$route.meta.title);
         store.commit("app/ADD_NAVBARITEM", {
           title: to.meta.title,
           path: to.path,
         });
         store.commit('app/CHANGE_CURRENTINDEX',navArr.length-1)
+  }else{
+    const index = navArr.findIndex(item => item.path == to.path)
+    store.commit('app/CHANGE_CURRENTINDEX',index)
+    console.log(index);
   }
   next()
 })

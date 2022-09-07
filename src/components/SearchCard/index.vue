@@ -15,8 +15,12 @@
                 v-model="form[item.prop]"
                 placeholder="请选择活动区域"
               >
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+                <el-option
+                  v-for="item1 in item.children"
+                  :key="item1.prop"
+                  :label="item1.label"
+                  :value="item1.prop"
+                ></el-option>
               </el-select>
               <el-input
                 v-else
@@ -76,7 +80,7 @@ export default {
   }
   .right {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     flex-direction: row;
     align-items: flex-end;
     .el-button {
