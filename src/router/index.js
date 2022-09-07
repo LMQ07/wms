@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 Vue.use(Router)
 const requireFiles = require.context('@/router/modules', false, /\.js$/)
 export const asyncRoutes = requireFiles.keys().map(item => requireFiles(item).default || requireFiles(item))
@@ -168,7 +167,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes,...asyncRoutes]
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()
@@ -178,5 +177,5 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
-
+console.log(router)
 export default router

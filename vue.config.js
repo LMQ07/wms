@@ -1,4 +1,5 @@
 'use strict'
+// const router = require('./src/router/index')
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
