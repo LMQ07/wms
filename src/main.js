@@ -34,7 +34,7 @@ Vue.config.productionTip = false
 // Vue.mixin(GetRoute)
 router.beforeEach((to, from, next) => {
   const navArr = store.getters.navArr
-  const flag = navArr.some((item) => item.path == to.path)
+  const flag = navArr.some((item) => item.path === to.path)
   if (!flag) {
     // this.navArr.push(this.$route.meta.title);
     store.commit('app/ADD_NAVBARITEM', {
