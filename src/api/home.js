@@ -1,24 +1,24 @@
-import request from '@/utils/request'
+import { serviceIps } from '@/utils/request'
 
 export const getHomeToDo = () => {
-  return request({
+  return serviceIps({
     url: 'home/todo'
   })
 }
 export const getHomeSumList = (params) => {
-  return request({
+  return serviceIps({
     url: 'home/sumList',
     params
   })
 }
 export const getHomeStockUseStatus = () => {
-  return request({
+  return serviceIps({
     url: 'home/stockUseStatus'
   })
 }
 
 export const getAreaUseStatus = () => {
-  return request({
+  return serviceIps({
     url: 'home/areaUseStatus'
   })
 }
