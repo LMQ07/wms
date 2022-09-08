@@ -9,29 +9,32 @@
       @changePage="changePage"
     >
       <template #btn>
-        <el-button
-          round
-          @click="$router.push('/manage-base-info/warehouse/details/null')"
-          >新增仓库</el-button
-        >
+        <el-button round @click="getCode">新增仓库</el-button>
       </template>
       <template #operate="{ scoped: { row } }">
-        <span class="operate-btn">编辑</span>
-        <span class="operate-btn">{{ row.status ? "启用" : "停用" }}</span>
-        <span class="operate-btn">删除</span>
+        <span class="operate-btn" @click="editWareHouse(row)">编辑</span>
+        <span class="operate-btn" @click="editWareHouseStatus(row)">{{
+          row.status ? "停用" : "启用"
+        }}</span>
+        <span class="operate-btn" @click="delWareHouse(row)">删除</span>
       </template>
       <template #type="{ scoped: { row } }">{{
         formateText(row.type)
       }}</template>
       <template #status="{ scoped: { row } }">{{
-        row.status ? "停用" : "启用"
+        row.status ? "启用" : "停用"
       }}</template>
     </Table>
   </div>
 </template>
 
 <script>
-import { getwarehouseList } from "@/api/manageBaseInfo";
+import {
+  getwarehouseList,
+  editWareHouse,
+  delWareHouse,
+} from "@/api/manageBaseInfo";
+
 export default {
   data() {
     return {
@@ -109,6 +112,7 @@ export default {
   },
   created() {
     this.getwarehouseList();
+    // this.getCode();
   },
   methods: {
     async getwarehouseList(current = 1, size = 10, form) {
@@ -116,7 +120,6 @@ export default {
       // console.log(data);
       this.tableData = data.records;
       this.total = parseInt(data.total);
-
       // console.log(res);
     },
     formateText(type) {
@@ -131,7 +134,6 @@ export default {
       }
     },
     changeSize(val) {
-      console.log(1);
       this.pageSize = val;
       this.getwarehouseList(1, val);
     },
@@ -140,6 +142,62 @@ export default {
     },
     searchData(form) {
       this.getwarehouseList(1, 10, form);
+    },
+    getCode() {
+      // console.log(res);
+      this.$router.push("/manage-base-info/warehouse/details/null");
+    },
+    editWareHouse(row) {
+      this.$store.commit("manageBaseInfo/SET_DETAILS", row);
+      this.$router.push(`/manage-base-info/warehouse/details/${row.id}`);
+      // console.log(row);
+    },
+    editWareHouseStatus(row) {
+      this.$confirm(
+        `确定要${row.status ? "停用" : "启用"}：${row.name} 吗？`,
+        `确认${row.status ? "停用" : "启用"}`,
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(async () => {
+          const status = row.status ? "0" : "1";
+          await editWareHouse({ id: row.id, status });
+          this.getwarehouseList();
+          this.$message({
+            type: "success",
+            message: "修改成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改",
+          });
+        });
+    },
+    async delWareHouse(row) {
+      this.$confirm(`确定要删除：${row.name} 吗？`, `确定删除`, {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          await delWareHouse({ ids: [row.id] });
+          this.getwarehouseList();
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

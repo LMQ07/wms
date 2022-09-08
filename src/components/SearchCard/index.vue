@@ -63,7 +63,6 @@ export default {
       if (!Object.keys(this.form).length) {
         this.$message.warning("请填写搜索信息");
       } else {
-        console.log(1);
         this.$emit("getFormData", this.form);
       }
     },
