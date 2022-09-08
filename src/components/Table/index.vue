@@ -12,8 +12,8 @@
       :row-class-name="tableRowClassName"
       :header-cell-style="{ background: 'rgb(249,246,238)' }"
       empty-text="暂无数据"
-      @selection-change="handleSelectionChange"
     >
+      <!-- @selection-change="handleSelectionChange" -->
       <el-table-column v-if="showBox" type="selection" width="55" />
       <el-table-column
         v-if="isShowIndex"
@@ -27,11 +27,10 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
-          width="200"
-          :fixed="thead.length == index ? 'right' : 'false'"
         >
+          <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
-            <slot :name="item.slotName" :row="row" />
+            <slot :name="item.slotName" :scoped="row" />
           </template>
         </el-table-column>
         <el-table-column
@@ -46,11 +45,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="currentPage"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -73,12 +72,12 @@ export default {
       type: [String, Number],
       default: 0,
     },
-    pageIndex: {
+    currentPage: {
       type: [String, Number],
       default: 1,
     },
-    totalPage: {
-      type: [String, Number],
+    total: {
+      type: [Number, String],
       default: 1,
     },
     isShowPage: {
@@ -97,6 +96,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    pageSizes: {
+      type: Array,
+      default: () => [1, 5, 10, 15],
+    },
+    pageSize: {
+      type: [Number, String],
+      default: 10,
+    },
   },
   data() {
     return {};
@@ -110,10 +117,11 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(123);
+      this.$emit("changeSize", val);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.$emit("changePage", val);
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 1) {

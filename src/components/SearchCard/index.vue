@@ -7,6 +7,7 @@
           label-width="50px"
           :model="form"
           class="card-form"
+          ref="formRef"
         >
           <el-col :span="8" v-for="item in config" :key="item.prop">
             <el-form-item :label="item.label">
@@ -19,7 +20,7 @@
                   v-for="item1 in item.children"
                   :key="item1.prop"
                   :label="item1.label"
-                  :value="item1.prop"
+                  :value="item1.value"
                 ></el-option>
               </el-select>
               <el-input
@@ -32,8 +33,8 @@
         </el-form>
       </el-col>
       <el-col class="right" :span="6" style="height: 70px">
-        <el-button round class="search-btn">搜索</el-button>
-        <el-button round class="reset-btn">重置</el-button>
+        <el-button round class="search-btn" @click="getDate">搜索</el-button>
+        <el-button round class="reset-btn" @click="resetForm">重置</el-button>
       </el-col>
     </el-row>
   </el-card>
@@ -51,6 +52,21 @@ export default {
     return {
       form: {},
     };
+  },
+  methods: {
+    resetForm() {
+      this.$parent.getwarehouseList();
+      this.$refs.formRef.resetFields();
+      this.form = {};
+    },
+    getDate() {
+      if (!Object.keys(this.form).length) {
+        this.$message.warning("请填写搜索信息");
+      } else {
+        console.log(1);
+        this.$emit("getFormData", this.form);
+      }
+    },
   },
 };
 </script>
