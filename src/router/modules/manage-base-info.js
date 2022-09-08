@@ -10,7 +10,6 @@ export default {
     name:'warehouse',
     component: () => import('@/views/ManageBaseInfo/Warehouse'),
     meta: { title: '仓库管理', icon: 'dashboard' },
-
   },{
     path:'area',
     name:'area',
@@ -41,5 +40,11 @@ export default {
     component: () => import('@/views/ManageBaseInfo/GoodStype'),
     meta: { title: '货品类型管理', icon: 'dashboard' },
 
-  }]
+  },{
+    path:'/manage-base-info/warehouse/details/:id',
+    name:'/details/null',
+    component: () => import('@/views/ManageBaseInfo/Warehouse/components/AddWarehouse.vue'),
+    meta: { title: '新增仓库' },
+    hidden:true
+}]
 }
