@@ -1,7 +1,7 @@
 <template>
   <el-card class="table-card">
     <el-row style="padding: 0px 30px 20px">
-      <slot name="btn"> </slot>
+      <slot name="btn"></slot>
     </el-row>
     <el-table
       ref="table"
@@ -15,30 +15,15 @@
     >
       <!-- @selection-change="handleSelectionChange" -->
       <el-table-column v-if="showBox" type="selection" width="55" />
-      <el-table-column
-        v-if="isShowIndex"
-        type="index"
-        label="序号"
-        width="80"
-      />
+      <el-table-column v-if="isShowIndex" type="index" label="序号" width="80" />
       <template v-for="(item, index) in thead">
-        <el-table-column
-          v-if="item.slotName"
-          :key="index"
-          :prop="item.prop"
-          :label="item.label"
-        >
+        <el-table-column v-if="item.slotName" :key="index" :prop="item.prop" :label="item.label">
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
             <slot :name="item.slotName" :scoped="row" />
           </template>
         </el-table-column>
-        <el-table-column
-          v-else
-          :key="index"
-          :prop="item.prop"
-          :label="item.label"
-        />
+        <el-table-column v-else :key="index" :prop="item.prop" :label="item.label" />
       </template>
     </el-table>
     <div v-if="tableDate.length !== 0 && isShowPage" class="page">
@@ -50,15 +35,14 @@
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >
-      </el-pagination>
+      ></el-pagination>
     </div>
   </el-card>
 </template>
 
 <script>
 export default {
-  name: "Table",
+  name: 'Table',
   props: {
     thead: {
       type: Array,
@@ -106,31 +90,31 @@ export default {
     },
   },
   data() {
-    return {};
+    return {}
   },
   watch: {
     isChecked(val) {
       if (!val) {
-        this.$refs.table.clearSelection();
+        this.$refs.table.clearSelection()
       }
     },
   },
   methods: {
     handleSizeChange(val) {
-      console.log(123);
-      this.$emit("changeSize", val);
+      console.log(123)
+      this.$emit('changeSize', val)
     },
     handleCurrentChange(val) {
-      this.$emit("changePage", val);
+      this.$emit('changePage', val)
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 1) {
-        return "row";
+        return 'row'
       }
-      return "";
+      return ''
     },
   },
-};
+}
 </script>
 
 <style scoped lang="scss">

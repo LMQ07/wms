@@ -10,8 +10,21 @@ export default {
     name:'list-in-list',
     component: () => import('@/views/ManageStorageIn/ListInList'),
     meta: { title: '入库单', icon: 'dashboard' },
+  },
+  // 新增入库单
+  {
+    path:'/manage-storage-in/list-in/list/details/:id',
+    component:() => import('@/views/ManageStorageIn/ListInList/components/RKDH.vue')
+  },
 
-  },{
+  // 查看详情
+  {
+    path:'/manage-storage-in/list-in/list/list-detail/:id',
+    name:"list-detail",
+    component:()=>import('@/views/ManageStorageIn/ListInList/components/viewDetails-s.vue'),
+    hidden: true
+  },
+  {
     path:'/list-in/task-receive',
     name:'task-receive',
     component: () => import('@/views/ManageStorageIn/TaskReceive'),

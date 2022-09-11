@@ -11,11 +11,7 @@
         >
           <el-col :span="8" v-for="item in config" :key="item.prop">
             <el-form-item :label="item.label">
-              <el-select
-                v-if="item.type == 'select'"
-                v-model="form[item.prop]"
-                placeholder="请选择活动区域"
-              >
+              <el-select v-if="item.type == 'select'" v-model="form[item.prop]" placeholder="请选择">
                 <el-option
                   v-for="item1 in item.children"
                   :key="item1.prop"
@@ -23,11 +19,7 @@
                   :value="item1.value"
                 ></el-option>
               </el-select>
-              <el-input
-                v-else
-                v-model="form[item.prop]"
-                placeholder="请输入"
-              ></el-input>
+              <el-input v-else v-model="form[item.prop]" placeholder="请输入"></el-input>
             </el-form-item>
           </el-col>
         </el-form>
@@ -42,7 +34,7 @@
 
 <script>
 export default {
-  name: "SearchCard",
+  name: 'SearchCard',
   props: {
     config: {
       type: Array,
@@ -51,24 +43,24 @@ export default {
   data() {
     return {
       form: {},
-    };
+    }
   },
   methods: {
     resetForm() {
-      this.$parent.getwarehouseList();
-      this.$refs.formRef.resetFields();
-      this.form = {};
+      this.$emit('resetlist', this.form)
+      this.$refs.formRef.resetFields()
+      this.form = {}
     },
     getDate() {
       if (!Object.keys(this.form).length) {
-        this.$message.warning("请填写搜索信息");
+        this.$message.warning('请填写搜索信息')
       } else {
-        console.log(1);
-        this.$emit("getFormData", this.form);
+        console.log(1)
+        this.$emit('getFormData', this.form)
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
