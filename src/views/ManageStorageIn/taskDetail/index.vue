@@ -3,12 +3,14 @@
     <div class="progress">
       上货进度
     </div>
-
+    <dialogeVue />
   </div>
 </template>
 
 <script>
+import dialogeVue from './components/dialoge.vue'
 export default {
+  components: { dialogeVue }
 
 }
 </script>
