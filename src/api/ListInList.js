@@ -26,3 +26,20 @@ export function getGrounding(params) {
     params
   })
 }
+
+// 获取下一个编码
+export function getCodeFactory(name) {
+  return serviceApi({
+    url:`/codeFactory/next/${name}`,
+    method: 'GET',
+  })
+}
+
+// 查询全部仓库
+export function getWarehouse(params) {
+  return serviceApi({
+    url:'/warehouse/list',
+    method: 'GET',
+    params
+  })
+}
