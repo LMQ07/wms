@@ -1,7 +1,7 @@
 <template>
   <el-card class="table-card">
     <el-row style="padding: 0px 30px 20px">
-      <slot name="btn"></slot>
+      <slot name="btn" />
     </el-row>
     <el-table
       ref="table"
@@ -15,27 +15,52 @@
     >
       <!-- @selection-change="handleSelectionChange" -->
       <el-table-column v-if="showBox" type="selection" width="55" />
-      <el-table-column v-if="isShowIndex" type="index" label="序号" width="80" />
+      <el-table-column
+        v-if="isShowIndex"
+        type="index"
+        label="序号"
+        width="80"
+      />
       <template v-for="(item, index) in thead">
-        <el-table-column v-if="item.slotName" :key="index" :prop="item.prop" :label="item.label">
+        <el-table-column
+          v-if="item.slotName"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
+        >
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
             <slot :name="item.slotName" :scoped="row" />
           </template>
         </el-table-column>
-        <el-table-column v-else :key="index" :prop="item.prop" :label="item.label" />
+        <el-table-column
+          v-else
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
+        />
       </template>
     </el-table>
     <div v-if="tableDate.length !== 0 && isShowPage" class="page">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="pageSizes"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      ></el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </el-card>
 </template>
@@ -46,48 +71,48 @@ export default {
   props: {
     thead: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     tableDate: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     totalCount: {
       type: [String, Number],
-      default: 0,
+      default: 0
     },
     currentPage: {
       type: [String, Number],
-      default: 1,
+      default: 1
     },
     total: {
       type: [Number, String],
-      default: 1,
+      default: 1
     },
     isShowPage: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isShowIndex: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showBox: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isChecked: {
       type: Boolean,
-      default: true,
+      default: true
     },
     pageSizes: {
       type: Array,
-      default: () => [1, 5, 10, 15],
+      default: () => [1, 5, 10, 15]
     },
     pageSize: {
       type: [Number, String],
-      default: 10,
-    },
+      default: 10
+    }
   },
   data() {
     return {}
@@ -97,7 +122,7 @@ export default {
       if (!val) {
         this.$refs.table.clearSelection()
       }
-    },
+    }
   },
   methods: {
     handleSizeChange(val) {
@@ -112,8 +137,8 @@ export default {
         return 'row'
       }
       return ''
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -1,7 +1,7 @@
-import request from '@/utils/request'
+import { serviceApi, serviceIps } from '@/utils/request'
 
 export function getwarehouseList(params) {
-  return request({
+  return serviceApi({
     url: '/warehouse/page',
     method: 'get',
     params

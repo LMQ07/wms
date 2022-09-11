@@ -1,9 +1,9 @@
 <template>
   <div class="warehousing">
-    <SearchCard :config="configTitle" @getFormData="getFormDataFn" @resetlist="resetlistFn"></SearchCard>
+    <SearchCard :config="configTitle" @getFormData="getFormDataFn" @resetlist="resetlistFn" />
     <Table
       :thead="thead"
-      :showBox="showBoxB"
+      :show-box="showBoxB"
       :table-date="list"
       :page-sizes="pageSizes"
       :total="total"
@@ -17,9 +17,9 @@
       <template v-slot:action="{ scoped:{ row } }">
         <el-button
           type="text"
-          @click="vewDetails(row)"
           style="color:#f7c76d;"
           class="viewDetails"
+          @click="vewDetails(row)"
         >查看详情</el-button>
       </template>
     </Table>
@@ -42,9 +42,9 @@ export default {
             { value: '待分配' },
             { value: '收获中' },
             { value: '收货完成' },
-            { value: '已取消' },
-          ],
-        },
+            { value: '已取消' }
+          ]
+        }
       ],
       thead: [
         { label: '收货任务编号', prop: 'code' },
@@ -60,19 +60,19 @@ export default {
         { label: '实收总数', prop: 'realNum' },
         { label: '收货差异', prop: 'differenceNum' },
         { label: '收货完成时间', prop: 'completionTime' },
-        { label: '操作', slotName: 'action', prop: 'code' },
+        { label: '操作', slotName: 'action', prop: 'code', fixed: 'right', width: '200' }
       ],
       search: {
         code: '',
         ownerName: '',
         status: '',
         size: 10,
-        current: 1,
+        current: 1
       },
       showBoxB: true,
       list: [],
       total: 0,
-      pageSizes: [10, 20, 30, 40],
+      pageSizes: [10, 20, 30, 40]
     }
   },
   created() {
@@ -127,10 +127,10 @@ export default {
     vewDetails(row) {
       this.$router.push({
         path: `/manage-storage-in/list-in/list/list-detail/${row.id}`,
-        query: row,
+        query: row
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
