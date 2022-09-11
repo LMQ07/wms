@@ -1,7 +1,7 @@
 <template>
   <el-card class="table-card">
     <el-row style="padding: 0px 30px 20px">
-      <slot name="btn"> </slot>
+      <slot name="btn" />
     </el-row>
     <el-table
       ref="table"
@@ -27,6 +27,11 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         >
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
@@ -38,99 +43,103 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         />
       </template>
     </el-table>
     <div v-if="tableDate.length !== 0 && isShowPage" class="page">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="pageSizes"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >
-      </el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </el-card>
 </template>
 
 <script>
 export default {
-  name: "Table",
+  name: 'Table',
   props: {
     thead: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     tableDate: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     totalCount: {
       type: [String, Number],
-      default: 0,
+      default: 0
     },
     currentPage: {
       type: [String, Number],
-      default: 1,
+      default: 1
     },
     total: {
       type: [Number, String],
-      default: 1,
+      default: 1
     },
     isShowPage: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isShowIndex: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showBox: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isChecked: {
       type: Boolean,
-      default: true,
+      default: true
     },
     pageSizes: {
       type: Array,
-      default: () => [1, 5, 10, 15],
+      default: () => [1, 5, 10, 15]
     },
     pageSize: {
       type: [Number, String],
-      default: 10,
-    },
+      default: 10
+    }
   },
   data() {
-    return {};
+    return {}
   },
   watch: {
     isChecked(val) {
       if (!val) {
-        this.$refs.table.clearSelection();
+        this.$refs.table.clearSelection()
       }
-    },
+    }
   },
   methods: {
     handleSizeChange(val) {
-      console.log(123);
-      this.$emit("changeSize", val);
+      console.log(123)
+      this.$emit('changeSize', val)
     },
     handleCurrentChange(val) {
-      this.$emit("changePage", val);
+      this.$emit('changePage', val)
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 1) {
-        return "row";
+        return 'row'
       }
-      return "";
-    },
-  },
-};
+      return ''
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

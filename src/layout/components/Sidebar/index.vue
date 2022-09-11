@@ -20,6 +20,7 @@
         />
       </el-menu>
     </el-scrollbar>
+
   </div>
 </template>
 
@@ -72,3 +73,6 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+</style>
