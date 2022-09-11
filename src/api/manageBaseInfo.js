@@ -15,3 +15,28 @@ export function getAllWareHouse() {
     }
   })
 }
+export const getAreaListDate = (params) => {
+  return serviceApi({
+    url: 'area/list',
+    params
+  })
+}
+export const getInptSearchAreaList = (params) => {
+  return serviceApi({
+    url: 'area/list',
+    params
+  })
+}
+// 获得区域的库存列表
+export const getAreaBySearch = (id) => {
+  return serviceApi({
+    url: `area/overview/${id}`
+  })
+}
+// 获取详情
+export const getDetailLocation = (params) => {
+  return serviceApi({
+    url: 'location/listDetail',
+    params
+  })
+}
