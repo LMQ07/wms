@@ -1,4 +1,4 @@
-import {serviceApi,serviceIps} from '@/utils/request'
+import { serviceApi, serviceIps } from '@/utils/request'
 
 // 查询全部入库单
 export function getInquire(params) {
@@ -30,16 +30,22 @@ export function getGrounding(params) {
 // 获取下一个编码
 export function getCodeFactory(name) {
   return serviceApi({
-    url:`/codeFactory/next/${name}`,
-    method: 'GET',
+    url: `/codeFactory/next/${name}`,
+    method: 'GET'
   })
 }
 
 // 查询全部仓库
 export function getWarehouse(params) {
   return serviceApi({
-    url:'/warehouse/list',
+    url: '/warehouse/list',
     method: 'GET',
     params
+  })
+}
+// 查询所有的货主
+export function getOwnerList() {
+  return serviceApi({
+    url: '/owner/list'
   })
 }
