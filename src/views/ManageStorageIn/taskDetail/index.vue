@@ -11,7 +11,6 @@
 import dialogeVue from './components/dialoge.vue'
 export default {
   components: { dialogeVue }
-
 }
 </script>
 
