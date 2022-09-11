@@ -30,3 +30,44 @@ export function getCodeFactory(name) {
     url: `codeFactory/next/${name}`
   })
 }
+
+// 查询全部仓库
+export function getWareHouse(params) {
+  return serviceApi({
+    url: 'warehouse/list',
+    params
+  })
+}
+
+// 查询全部货主管理
+export function getOwner(params) {
+  return serviceApi({
+    url: 'owner/list',
+    params
+  })
+}
+
+// 查询全部库区
+export function getArea(params) {
+  return serviceApi({
+    url: 'area/list',
+    params
+  })
+}
+
+// 新增出库单接口
+export function getAddOutbound(data) {
+  return serviceIps({
+    url: 'outbound',
+    method: 'post',
+    data
+  })
+}
+
+// 添加发货商品
+export function addGoods(params) {
+  return serviceIps({
+    utl: 'stock/pageDetail',
+    params
+  })
+}

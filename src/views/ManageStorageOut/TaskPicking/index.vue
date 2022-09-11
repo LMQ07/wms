@@ -124,7 +124,7 @@ export default {
       try {
         this.search = { ...this.search, ...obj }
         const { data } = await getPickingList(this.search)
-        console.log(data)
+        // console.log(data)
         this.list = data.records
         this.total = Number(data.total)
       } catch (e) {
