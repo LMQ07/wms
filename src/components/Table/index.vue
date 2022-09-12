@@ -44,7 +44,7 @@
           :prop="item.prop"
           :label="item.label"
           :fixed="item.fixed || false"
-          :width="item.width ||120"
+          :width="item.width"
           :sortable="item.sortable||false"
           :filters="item.filters"
           :filter-method="item.filterMethod"

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <SearchCard :config="setForm" @getFormData="searchData" />
+    <SearchCard
+      :config="setForm"
+      @getFormData="searchData"
+      @reset="getwarehouseList"
+    />
     <Table
       :thead="tableLabel"
       :table-date="tableData"
@@ -9,35 +13,40 @@
       @changePage="changePage"
     >
       <template #btn>
-        <el-button
-          round
-          @click="$router.push('/manage-base-info/warehouse/details/null')"
-        >新增仓库</el-button>
+        <el-button round @click="getCode">新增仓库</el-button>
       </template>
       <template #operate="{ scoped: { row } }">
-        <span class="operate-btn">编辑</span>
-        <span class="operate-btn">{{ row.status ? "启用" : "停用" }}</span>
-        <span class="operate-btn">删除</span>
+        <span class="operate-btn" @click="editWareHouse(row)">编辑</span>
+        <span class="operate-btn" @click="editWareHouseStatus(row)">{{
+          row.status ? "停用" : "启用"
+        }}</span>
+        <span class="operate-btn" @click="delWareHouse(row)">删除</span>
       </template>
       <template #type="{ scoped: { row } }">{{
         formateText(row.type)
       }}</template>
       <template #status="{ scoped: { row } }">{{
-        row.status ? "停用" : "启用"
+        row.status ? "启用" : "停用"
       }}</template>
     </Table>
   </div>
 </template>
 
 <script>
-import { getwarehouseList } from '@/api/manageBaseInfo'
+import {
+  getwarehouseList,
+  editWareHouse,
+  delWareHouse,
+} from "@/api/manageBaseInfo";
+
 export default {
   data() {
     return {
       tableLabel: [
         {
-          prop: 'code',
-          label: '仓库编码'
+          prop: "code",
+          label: "仓库编码",
+          width: "100",
         },
         {
           prop: 'name',
@@ -49,8 +58,9 @@ export default {
           slotName: 'type'
         },
         {
-          prop: 'location',
-          label: '省/市/区'
+          prop: "location",
+          label: "省/市/区",
+          width: "160",
         },
         {
           prop: 'address',
@@ -74,23 +84,21 @@ export default {
           label: '负责人'
         },
         {
-          prop: 'phone',
-          label: '联系电话'
+          prop: "phone",
+          label: "联系电话",
+          width: "130",
         },
         {
-          prop: 'updateTime',
-          label: '更新时间',
-          width: '200',
-          filters: [{ 'text': '123', 'value': '123' }],
-          sortable: 'true',
-          filterMethod: (value, row, column) => { console.log(value, row, column) }
+          prop: "updateTime",
+          label: "更新时间",
+          width: "150",
         },
         {
-          label: '操作',
-          slotName: 'operate',
-          fixed: 'right',
-          width: '200'
-        }
+          label: "操作",
+          slotName: "operate",
+          fixed: "right",
+          width: "150",
+        },
       ],
       tableData: [],
       total: '',
@@ -100,9 +108,9 @@ export default {
         { label: '仓库编号', prop: 'like_code' },
         { label: '仓库名称', prop: 'like_name' },
         {
-          label: '仓库编号',
-          prop: 'status',
-          type: 'select',
+          label: "仓库状态",
+          prop: "status",
+          type: "select",
           children: [
             { label: '全部', value: null },
             { label: '停用', value: 0 },
@@ -113,15 +121,16 @@ export default {
     }
   },
   created() {
-    this.getwarehouseList()
+    this.getwarehouseList();
+    // this.getCode();
   },
   methods: {
     async getwarehouseList(current = 1, size = 10, form) {
       const { data } = await getwarehouseList({ current, size, ...form })
       // console.log(data);
-      this.tableData = data.records
-      this.total = parseInt(data.total)
-
+      this.tableData = data.records;
+      this.total = parseInt(data.total);
+      this.pageSize = data.size;
       // console.log(res);
     },
     formateText(type) {
@@ -136,18 +145,75 @@ export default {
       }
     },
     changeSize(val) {
-      console.log(1)
-      this.pageSize = val
-      this.getwarehouseList(1, val)
+      this.pageSize = val;
+      this.getwarehouseList(1, val);
     },
     changePage(val) {
       this.getwarehouseList(val, this.pageSize)
     },
     searchData(form) {
-      this.getwarehouseList(1, 10, form)
-    }
-  }
-}
+      this.getwarehouseList(1, 10, form);
+    },
+    getCode() {
+      // console.log(res);
+      this.$router.push("/manage-base-info/warehouse/details/null");
+    },
+    editWareHouse(row) {
+      this.$store.commit("manageBaseInfo/SET_DETAILS", row);
+      this.$router.push(`/manage-base-info/warehouse/details/${row.id}`);
+      const index = this.$store.state.app.navArr.length - 1;
+      this.$store.commit("app/EDIT_NAVBARITEM", { index, title: "修改仓库" });
+      // console.log(row);
+    },
+    editWareHouseStatus(row) {
+      this.$confirm(
+        `确定要${row.status ? "停用" : "启用"}：${row.name} 吗？`,
+        `确认${row.status ? "停用" : "启用"}`,
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(async () => {
+          const status = row.status ? "0" : "1";
+          await editWareHouse({ id: row.id, status });
+          this.getwarehouseList();
+          this.$message({
+            type: "success",
+            message: "修改成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改",
+          });
+        });
+    },
+    async delWareHouse(row) {
+      this.$confirm(`确定要删除：${row.name} 吗？`, `确定删除`, {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          await delWareHouse({ ids: [row.id] });
+          this.getwarehouseList();
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+  },
+};
 </script>
 
 <style>

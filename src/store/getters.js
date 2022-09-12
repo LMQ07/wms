@@ -6,6 +6,7 @@ const getters = {
   device: state => state.app.device,
   isRememberNot: state => state.user.isRemember,
   userInfo: state => state.user.userInfo,
-  token: state => state.user.token
+  token: state => state.user.token,
+  currentWareHouseDetails:state => state.manageBaseInfo.currentWareHouseDetails
 }
 export default getters
