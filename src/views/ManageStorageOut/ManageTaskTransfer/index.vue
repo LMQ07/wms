@@ -52,7 +52,9 @@ export default {
         },
         {
           label: '创建时间',
-          prop: 'createTime'
+          prop: 'createTime',
+          width: '160',
+          sortable: true
         },
         {
           label: '创建人',
@@ -69,7 +71,13 @@ export default {
         {
           label: '交接状态',
           prop: 'status',
-          slotName: 'status'
+          slotName: 'status',
+          filters: [
+            { 'text': '新建', 'value': '1' },
+            { 'text': '交接中', 'value': '2' },
+            { 'text': '交接完成', 'value': '3' }
+          ],
+          filterMethod: this.filterHandler
         },
         {
           label: '交接员',
@@ -77,8 +85,9 @@ export default {
         },
         {
           label: '交接完成时间',
-          prop: 'completionTime'
-
+          prop: 'completionTime',
+          width: '160',
+          sortable: true
         },
         {
           label: '交接司机',
@@ -89,7 +98,9 @@ export default {
           prop: 'driverPhone'
         },
         {
-          label: '操作'
+          label: '操作',
+          fixed: 'right',
+          width: '200'
         }
       ],
       list: [],
@@ -136,6 +147,10 @@ export default {
     getFormData(obj) {
       // console.log(obj)
       this.getTransferList(obj)
+    },
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === Number(value)
     }
   }
 }

@@ -26,9 +26,32 @@
       </template>
       <template #operate="{ scoped: { row }}">
         <el-button v-if="row.status !== 1" class="look" @click="look(row)">查看操作</el-button>
-        <el-button v-else class="look" @click="look(row)">分配</el-button>
+        <el-button v-else class="look" @click="allocation(row)">分配</el-button>
       </template>
     </Table>
+    <!-- 分配弹窗 -->
+    <el-dialog
+      title="人员分配"
+      :visible.sync="dialogVisibleFp"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>
+        <el-row type="flex" align="middle" justify="center">
+          <span class="fuzeren">负责人 </span>
+          <el-select clearable placeholder="请选择">
+            <el-option
+              label="item.label"
+              value="item.value"
+            />
+          </el-select>
+        </el-row>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button round class="reset-btn" @click="dialogVisibleFp = false">取 消</el-button>
+        <el-button type="primary" class="search-btn" round @click="dialogVisibleFp = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -69,7 +92,9 @@ export default {
         },
         {
           label: '创建时间',
-          prop: 'createTime'
+          prop: 'createTime',
+          width: '160',
+          sortable: true
         },
         {
           label: '货主名称',
@@ -85,13 +110,20 @@ export default {
         },
         {
           label: '拣货数量',
-          prop: 'pickingNum'
+          prop: 'pickingNum',
+          sortable: true
 
         },
         {
           label: '拣货状态',
           prop: 'status',
-          slotName: 'status'
+          slotName: 'status',
+          filters: [
+            { 'text': '待分配', 'value': '1' },
+            { 'text': '拣货中', 'value': '2' },
+            { 'text': '拣货完成', 'value': '3' }
+          ],
+          filterMethod: this.filterHandler
         },
         {
           label: '负责人',
@@ -104,16 +136,22 @@ export default {
         },
         {
           label: '完成时间',
-          prop: 'completionTime'
+          prop: 'completionTime',
+          width: '170',
+          sortable: true
         },
         {
           label: '操作',
-          slotName: 'operate'
+          slotName: 'operate',
+          fixed: 'right',
+          width: '200'
         }
       ],
       list: [],
       total: 0,
-      pageSizes: [10, 20, 30, 40]
+      pageSizes: [10, 20, 30, 40],
+      dialogVisibleFp: false,
+      personName: []
     }
   },
   created() {
@@ -124,7 +162,7 @@ export default {
       try {
         this.search = { ...this.search, ...obj }
         const { data } = await getPickingList(this.search)
-        // console.log(data)
+        console.log(data)
         this.list = data.records
         this.total = Number(data.total)
       } catch (e) {
@@ -144,7 +182,9 @@ export default {
     },
     // 查看操作
     look(row) {
-      console.log(row)
+      // console.log(row)
+      console.log(row.masterId)
+      this.$router.push(`sure/${row.masterId}`)
     },
     changePage(val) {
       // console.log(val)
@@ -155,6 +195,18 @@ export default {
       // console.log(val)
       this.search.size = val
       this.getPickingList()
+    },
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === Number(value)
+    },
+    // 分配操作
+    allocation(val) {
+      // alert('111')
+      this.dialogVisibleFp = true
+    },
+    handleClose() {
+      this.dialogVisibleFp = false
     }
 
   }
@@ -179,5 +231,21 @@ export default {
 }
 ::v-deep .el-checkbox__inner:hover {
     border-color: #ffb200;
+}
+.dialog-footer {
+  .el-button {
+      color: #332929;
+      border: unset;
+      background-color: #f8f5f5;
+
+      &.search-btn {
+        background-color: #ffb200;
+      }
+      &.reset-btn {
+      }
+    }
+}
+.fuzeren {
+  margin-right: 15px;
 }
 </style>

@@ -83,17 +83,29 @@ export default {
         },
         {
           label: '计划出库时间',
-          prop: 'planOutTime'
+          prop: 'planOutTime',
+          width: '170',
+          sortable: true
 
         },
         {
           label: '货品数量',
-          prop: 'goodsNum'
+          prop: 'goodsNum',
+          sortable: true
         },
         {
           label: '出库单状态',
           prop: 'status',
-          slotName: 'status'
+          slotName: 'status',
+          filters: [
+            { 'text': '新建', 'value': '1' },
+            { 'text': '拣货中', 'value': '2' },
+            { 'text': '已取消', 'value': '3' },
+            { 'text': '拣货完成', 'value': '4' },
+            { 'text': '交接中', 'value': '5' },
+            { 'text': '交接完成', 'value': '6' }
+          ],
+          filterMethod: this.filterHandler
         },
         {
           label: '创建人',
@@ -101,11 +113,15 @@ export default {
         },
         {
           label: '创建时间',
-          prop: 'createTime'
+          prop: 'createTime',
+          width: '170',
+          sortable: true
         },
         {
           label: '操作',
-          slotName: 'operate'
+          slotName: 'operate',
+          fixed: 'right',
+          width: '200'
         }
       ],
       list: [],
@@ -168,6 +184,10 @@ export default {
     },
     getFormData(obj) {
       this.getOutBoundList(obj)
+    },
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === Number(value)
     }
 
   }

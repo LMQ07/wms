@@ -27,6 +27,11 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         >
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
@@ -38,6 +43,11 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width ||120"
+          :sortable="item.sortable||false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         />
       </template>
     </el-table>

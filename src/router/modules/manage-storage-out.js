@@ -26,7 +26,13 @@ export default {
       name: 'list-out-task-picking',
       component: () => import('@/views/ManageStorageOut/TaskPicking'),
       meta: { title: '拣货任务', icon: 'dashboard' }
-
+    },
+    {
+      path: 'sure/:id',
+      name: 'sure',
+      hidden: true,
+      component: () => import('@/views/ManageStorageOut/TaskPicking/components/sure.vue'),
+      meta: { title: '拣货详情' }
     },
     {
       path: 'manage-task-transfer',
