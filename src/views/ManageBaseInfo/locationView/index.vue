@@ -12,7 +12,7 @@
       </el-select>
       <div class="areaContainer">
         <el-input v-model="likeName" placeholder="请输入区域名称" suffix-icon="el-icon-search" />
-        <div v-if="areaList.length !== 0">
+        <div v-if="areaList.length !== 0" class="containerBox">
           <div
             v-for="item in areaList"
             :key="item.id"
@@ -250,6 +250,10 @@ export default {
      padding: 30px 29px 30px 26px;
      margin-top: 21px;
      min-height: 480px;
+     .containerBox{
+      height: 380px;
+      overflow:auto;
+     }
     .areaItem{
     width: 140px;
     height: 40px;
