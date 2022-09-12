@@ -129,7 +129,7 @@ export default {
       if (value !== '') {
         this.searchDetail()
       } else {
-        this.getAreaListDate()
+        this.searchDetail()
       }
     }
   },
@@ -194,9 +194,11 @@ export default {
       }
     },
     async changeId(id) {
-      const { data } = await getAreaBySearch(id)
-      this.containObj = data
-      console.log(data)
+      if (id !== '') {
+        const { data } = await getAreaBySearch(id)
+        this.containObj = data
+        console.log(data)
+      }
     },
     async getDetailLocation(id) {
       const res = await getDetailLocation({ areaId: id })
