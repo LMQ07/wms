@@ -19,7 +19,7 @@
         {{ formateText(row.status) }}
       </template>
       <template #done="{ scoped:{ row }}">
-        <el-button v-if="row.handoverName !== null" type="text" style="color:#FFB200" @click="setRole(row.id)">分配</el-button>
+        <el-button v-if="row.handoverName === null" type="text" style="color:#FFB200" @click="setRole(row.id)">分配</el-button>
       </template>
     </Table>
     <el-dialog
