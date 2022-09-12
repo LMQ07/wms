@@ -40,6 +40,10 @@ module.exports = {
       '/api': {
         target: 'http://www-wms-java.itheima.net',
         changeOrigin: true
+      },
+      '/ips': {
+        target: 'http://www-wms-java.itheima.net',
+        changeOrigin: true
       }
     }
     // before: require('./mock/mock-server.js')

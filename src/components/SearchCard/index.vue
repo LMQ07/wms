@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     resetForm() {
-      this.$parent.getwarehouseList();
+      this.$emit("reset");
       this.$refs.formRef.resetFields();
       this.form = {};
     },

@@ -1,7 +1,7 @@
 <template>
   <el-card class="table-card">
     <el-row style="padding: 0px 30px 20px">
-      <slot name="btn"> </slot>
+      <slot name="btn" />
     </el-row>
     <el-table
       ref="table"
@@ -27,6 +27,11 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width || 120"
+          :sortable="item.sortable || false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         >
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
@@ -38,20 +43,24 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          :fixed="item.fixed || false"
+          :width="item.width"
+          :sortable="item.sortable || false"
+          :filters="item.filters"
+          :filter-method="item.filterMethod"
         />
       </template>
     </el-table>
     <div v-if="tableDate.length !== 0 && isShowPage" class="page">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="pageSizes"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >
-      </el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </el-card>
 </template>

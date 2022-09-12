@@ -57,7 +57,9 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="仓库面积" prop="surface">
-            <el-input v-model="form.surface" placeholder="请输入"></el-input>
+            <el-input v-model="form.surface" placeholder="请输入">
+              <template slot="append">m²</template>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -71,11 +73,6 @@
           </el-form-item>
         </el-col>
       </el-form>
-
-      <!-- <el-col class="right" :span="6" style="height: 70px">
-        <el-button round class="search-btn" @click="getDate">搜索</el-button>
-        <el-button round class="reset-btn" @click="resetForm">重置</el-button>
-      </el-col> -->
     </el-row>
     <el-row type="flex" justify="center">
       <el-button round class="search-btn">返回</el-button>
@@ -86,15 +83,12 @@
 
 <script>
 import { regionData } from "element-china-area-data";
-import { addWareHouse, getNextCode } from "@/api/manageBaseInfo";
+import { addWareHouse, getNextCode, editWareHouse } from "@/api/manageBaseInfo";
 export default {
-  created() {
-    console.log(regionData);
+  mounted() {
     if (this.addOrEdit == "edit") {
       this.form = this.$store.state.manageBaseInfo.currentWareHouseDetails;
       this.form.location = [this.form.province, this.form.city, this.form.area];
-      console.log(this.form.location);
-      console.log(this);
     } else {
       this.getCode();
     }
@@ -115,16 +109,30 @@ export default {
         status: [{ required: true, message: "必填项", trigger: "blur" }],
         surface: [{ required: true, message: "必填项", trigger: "blur" }],
         personName: [{ required: true, message: "必填项", trigger: "blur" }],
-        phone: [{ required: true, message: "必填项", trigger: "blur" }],
+        phone: [
+          { required: true, message: "必填项", trigger: "blur" },
+          {
+            pattern: /^(?:(?:\+|00)86)?1\d{10}$/,
+            message: "请输入正确的手机号",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
   methods: {
     async add() {
+      this.form.location = this.$refs.unitAreacode.inputValue;
       try {
-        this.form.location = this.$refs.unitAreacode.inputValue;
-        await addWareHouse(this.form);
-        this.$message.success("新增仓库成功！");
+        if (this.addOrEdit == "add") {
+          // this.form.location = this.$refs.unitAreacode.inputValue;
+          await addWareHouse(this.form);
+          this.$message.success("新增仓库成功！");
+        } else {
+          await editWareHouse(this.form);
+          console.log(this.form);
+          this.$message.success("恭喜你！提交成功");
+        }
       } catch (error) {
         this.$message.error(error.message);
       }
@@ -138,6 +146,7 @@ export default {
       this.form.province = val[0];
       this.form.city = val[1];
       this.form.area = val[2];
+      console.log(this.form);
     },
     async getCode() {
       const { data } = await getNextCode("CK");

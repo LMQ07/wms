@@ -1,6 +1,10 @@
 <template>
   <div>
-    <SearchCard :config="setForm" @getFormData="searchData" />
+    <SearchCard
+      :config="setForm"
+      @getFormData="searchData"
+      @reset="getwarehouseList"
+    />
     <Table
       :thead="tableLabel"
       :tableDate="tableData"
@@ -42,6 +46,7 @@ export default {
         {
           prop: "code",
           label: "仓库编码",
+          width: "100",
         },
         {
           prop: "name",
@@ -55,6 +60,7 @@ export default {
         {
           prop: "location",
           label: "省/市/区",
+          width: "160",
         },
         {
           prop: "address",
@@ -80,14 +86,18 @@ export default {
         {
           prop: "phone",
           label: "联系电话",
+          width: "130",
         },
         {
           prop: "updateTime",
           label: "更新时间",
+          width: "150",
         },
         {
           label: "操作",
           slotName: "operate",
+          fixed: "right",
+          width: "150",
         },
       ],
       tableData: [],
@@ -98,7 +108,7 @@ export default {
         { label: "仓库编号", prop: "like_code" },
         { label: "仓库名称", prop: "like_name" },
         {
-          label: "仓库编号",
+          label: "仓库状态",
           prop: "status",
           type: "select",
           children: [
@@ -120,6 +130,7 @@ export default {
       // console.log(data);
       this.tableData = data.records;
       this.total = parseInt(data.total);
+      this.pageSize = data.size;
       // console.log(res);
     },
     formateText(type) {
@@ -150,6 +161,8 @@ export default {
     editWareHouse(row) {
       this.$store.commit("manageBaseInfo/SET_DETAILS", row);
       this.$router.push(`/manage-base-info/warehouse/details/${row.id}`);
+      const index = this.$store.state.app.navArr.length - 1;
+      this.$store.commit("app/EDIT_NAVBARITEM", { index, title: "修改仓库" });
       // console.log(row);
     },
     editWareHouseStatus(row) {

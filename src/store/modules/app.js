@@ -15,6 +15,9 @@ const mutations = {
   ADD_NAVBARITEM:(state,newitem) => {
     state.navArr.push(newitem)
   },
+  EDIT_NAVBARITEM:(state,info) => {
+    state.navArr[info.index].title = info.title
+  },
   DELET_NAVBARITEM:(state,index) => {
     state.navArr.splice(index,1)
   },

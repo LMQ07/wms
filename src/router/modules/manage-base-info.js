@@ -42,9 +42,15 @@ export default {
 
   },{
     path:'/manage-base-info/warehouse/details/:id',
-    name:'/details/null',
+    name:'detailsDialog',
     component: () => import('@/views/ManageBaseInfo/Warehouse/components/AddWarehouse.vue'),
     meta: { title: '新增仓库' },
     hidden:true
+},{
+  path:'/manage-base-info/area/details/:id',
+  name:'areaDialog',
+  component: () => import('@/views/ManageBaseInfo/Area/components/AddArea.vue'),
+  meta: { title: '新增库区' },
+  hidden:true
 }]
 }
