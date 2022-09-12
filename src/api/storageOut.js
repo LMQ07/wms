@@ -71,6 +71,14 @@ export function addGoods(params) {
     params
   })
 }
+// 分配人员
+export function setRole(data) {
+  return serviceApi({
+    url: 'picking/distribute',
+    method: 'PUT',
+    data
+  })
+}
 
 // 查询合计信息
 export function searchSum(masterId) {
