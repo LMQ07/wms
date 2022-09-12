@@ -67,7 +67,15 @@ export function getAddOutbound(data) {
 // 添加发货商品
 export function addGoods(params) {
   return serviceIps({
-    utl: 'stock/pageDetail',
+    url: 'stock/pageDetail',
     params
+  })
+}
+// 分配人员
+export function setRole(data) {
+  return serviceApi({
+    url: 'picking/distribute',
+    method: 'PUT',
+    data
   })
 }

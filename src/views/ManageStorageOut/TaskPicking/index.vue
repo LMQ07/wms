@@ -241,8 +241,6 @@ export default {
       &.search-btn {
         background-color: #ffb200;
       }
-      &.reset-btn {
-      }
     }
 }
 .fuzeren {
