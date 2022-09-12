@@ -35,6 +35,13 @@ export default {
       meta: { title: '拣货详情' }
     },
     {
+      path: 'list-detail/:id',
+      name: 'list-detail',
+      hidden: true,
+      component: () => import('@/views/ManageStorageOut/ListOutList/components/listDetai.vue'),
+      meta: { title: '查看出库单详情' }
+    },
+    {
       path: 'manage-task-transfer',
       name: 'manage-task-transfer',
       component: () => import('@/views/ManageStorageOut/ManageTaskTransfer'),

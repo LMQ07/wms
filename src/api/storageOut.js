@@ -67,7 +67,45 @@ export function getAddOutbound(data) {
 // 添加发货商品
 export function addGoods(params) {
   return serviceIps({
-    utl: 'stock/pageDetail',
+    url: 'stock/pageDetail',
     params
+  })
+}
+
+// 查询合计信息
+export function searchSum(masterId) {
+  return serviceIps({
+    url: `outboundList/sum/${masterId}`
+  })
+}
+
+// 分页查询出库清单明细
+export function getOutBound(params) {
+  return serviceIps({
+    url: 'outboundList/pageDetail',
+    params
+  })
+}
+
+// 取消出库单
+export function cancel(data) {
+  return serviceIps({
+    url: 'outbound/cancel',
+    method: 'PUT',
+    data
+  })
+}
+
+// 查询出库单
+export function checkOutbound(id) {
+  return serviceIps({
+    url: `outbound/${id}`
+  })
+}
+
+// 查询详情
+export function getDetails(id) {
+  return serviceIps({
+    url: `outbound/detail/${id}`
   })
 }

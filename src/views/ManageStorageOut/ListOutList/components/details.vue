@@ -176,7 +176,8 @@ import {
   getWareHouse,
   getArea,
   getOwner,
-  getAddOutbound
+  getAddOutbound,
+  checkOutbound
 } from '@/api/storageOut'
 import addGoods from './addGoods.vue'
 export default {
@@ -230,6 +231,12 @@ export default {
     this.getCodeFactory()
     this.getWareHouse()
     this.getOwner()
+    console.log(this.$route.params.id)
+  },
+  mounted() {
+    if (this.$route.params.id && this.$route.params.id !== 'null') {
+      this.checkOutbound()
+    }
   },
   methods: {
     async  getCodeFactory() {
@@ -280,7 +287,7 @@ export default {
           this.personName.push(obj)
         })
         // this.personName = new Set(this.personName)
-        console.log(this.personName)
+        // console.log(this.personName)
       } catch (e) {
         console.log(e)
       }
@@ -314,6 +321,15 @@ export default {
     },
     addOut() {
       this.$router.push('/manage-storage-out/list-out')
+    },
+    async checkOutbound() {
+      try {
+        const { data } = await checkOutbound(this.$route.params.id)
+        // console.log(data)
+        this.formData = data
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

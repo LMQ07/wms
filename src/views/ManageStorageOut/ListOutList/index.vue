@@ -32,14 +32,25 @@
         {{ outType (row.type) }}
       </template>
       <template #operate="{ scoped: { row }}">
-        <el-button class="look" @click="look(row)">查看操作</el-button>
+        <el-row v-if="row.status === 1">
+          <el-col :span="8">
+            <el-button class="look" @click="deitBtn(row)">修改详情</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button class="look" style="padding: 12px 5px;">生成拣货任务</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button class="look" @click="cancelBtn(row)">取消</el-button>
+          </el-col>
+        </el-row>
+        <el-button v-else class="look" @click="look(row)">查看详情</el-button>
       </template>
     </Table>
   </div>
 </template>
 
 <script>
-import { getOutBoundList } from '@/api/storageOut'
+import { getOutBoundList, cancel } from '@/api/storageOut'
 export default {
   data() {
     return {
@@ -121,7 +132,7 @@ export default {
           label: '操作',
           slotName: 'operate',
           fixed: 'right',
-          width: '200'
+          width: '270'
         }
       ],
       list: [],
@@ -171,6 +182,7 @@ export default {
     // 查看操作
     look(row) {
       console.log(row)
+      this.$router.push(`list-detail/${row.id}`)
     },
     changePage(val) {
       // console.log(val)
@@ -188,8 +200,39 @@ export default {
     filterHandler(value, row, column) {
       const property = column['property']
       return row[property] === Number(value)
+    },
+    cancelBtn(row) { // 取消操作
+      this.$confirm(`确认取消出库单${row.code}吗？`, '取消确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        roundButton: true,
+        confirmButtonClass: 'search-bt'
+      }).then(async() => {
+        try {
+          const res = await cancel({
+            id: row.id,
+            status: row.status
+          })
+          console.log(res)
+          this.getOutBoundList()
+          this.$message.success('取消成功')
+        } catch (e) {
+          // console.dir(e)
+          // this.$message.error(e.response.data.message)
+          this.$message.error('只能取消新建的出库单')
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    deitBtn(row) {
+      // console.log(row)
+      this.$router.push(`/manage-storage-out/list-out/details/${row.id}`)
     }
-
   }
 }
 </script>
@@ -201,10 +244,13 @@ export default {
 .look{
   color:#FFB200;
   border:unset;
- background-color: transparent;
+  background-color: transparent;
 }
 .look:hover {
   color: #FF8E00;
+}
+.search-btn {
+  background-color: #ffb200;
 }
 
 </style>

@@ -183,7 +183,7 @@ export default {
     // 查看操作
     look(row) {
       // console.log(row)
-      console.log(row.masterId)
+      // console.log(row.masterId)
       this.$router.push(`sure/${row.masterId}`)
     },
     changePage(val) {
@@ -240,8 +240,6 @@ export default {
 
       &.search-btn {
         background-color: #ffb200;
-      }
-      &.reset-btn {
       }
     }
 }
