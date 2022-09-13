@@ -13,11 +13,13 @@
       :total="total"
       :show-box="showBox"
       :page-sizes="pageSizes"
+      @changeSelect="changeSelect"
+      @changeallSelect="changeallSelect"
       @changeSize="changeSize"
       @changePage="changePage"
     >
       <template slot="btn">
-        <el-button class="btn" type="success" round>
+        <el-button class="btn" type="success" round @click="pickingOkBtn">
           拣货完成
         </el-button>
       </template>
@@ -52,11 +54,33 @@
         <el-button type="primary" class="search-btn" round @click="dialogVisibleFp = false">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 拣货成功 -->
+    <el-dialog
+      title="生成拣货任务"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose1"
+    >
+      <div class="body">
+        <div class="spanSubTitle">
+          个拣货任务生成失败！
+        </div>
+        <div class="divFailureMsg">
+          拣货任务生成失败原因如下
+        </div>
+        <div class="divItemList">
+          {{ str }}
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" class="okBtn" round @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getPickingList } from '@/api/storageOut'
+import { getPickingList, pickingOk } from '@/api/storageOut'
 export default {
   data() {
     return {
@@ -151,7 +175,11 @@ export default {
       total: 0,
       pageSizes: [10, 20, 30, 40],
       dialogVisibleFp: false,
-      personName: []
+      personName: [],
+      checkArr: [],
+      dialogVisible: false,
+      pickingList: [],
+      str: ''
     }
   },
   created() {
@@ -207,6 +235,42 @@ export default {
     },
     handleClose() {
       this.dialogVisibleFp = false
+    },
+    handleClose1() {
+      this.dialogVisible = false
+    },
+    processing(row) { // 拣货完成数据处理
+      const arr = []
+      row.forEach((ele, index) => {
+        arr[index] = ele.id
+      })
+      this.checkArr = arr
+    },
+    changeSelect(row) { // 单选
+      // console.log(row)
+      this.processing(row)
+      // console.log(this.checkArr)
+    },
+    changeallSelect(selection) { // 复选
+      this.processing(selection)
+      // console.log(this.checkArr)
+    },
+    async pickingOkBtn() {
+      if (this.checkArr.length === 0) {
+        this.$message.warning('请选择要拣货的数据')
+      } else {
+        try {
+          const { data } = await pickingOk(this.checkArr)
+          // console.log(data)
+          this.pickingList = data.errors
+          this.str = this.pickingList.join(',')
+          console.log(this.str)
+        } catch (e) {
+          console.log(e)
+        }
+        this.dialogVisible = true
+      }
+      // console.log(this.checkArr)
     }
 
   }
@@ -245,5 +309,48 @@ export default {
 }
 .fuzeren {
   margin-right: 15px;
+}
+.body {
+  background: #f9f9f9;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 23px;
+  padding: 21px 20px 50px 21px;
+
+  .spanSubTitle {
+    height: 24px;
+    font-size: 16px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #332929;
+    line-height: 24px;
+  }
+
+  .divFailureMsg{
+    color: #d9021c;
+    height: 22px;
+    font-size: 14px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    line-height: 22px;
+    margin-top: 11px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .divItemList{
+    font-size: 14px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #b5abab;
+    line-height: 22px;
+    padding-right: 10px;
+    text-align: left;
+  }
 }
 </style>

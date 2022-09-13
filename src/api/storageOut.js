@@ -126,3 +126,12 @@ export function getPicking(data) {
     data
   })
 }
+
+// 拣货完成
+export function pickingOk(data) {
+  return serviceIps({
+    url: 'picking/complete',
+    method: 'PUT',
+    data
+  })
+}

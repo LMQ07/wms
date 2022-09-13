@@ -12,9 +12,15 @@
       :row-class-name="tableRowClassName"
       :header-cell-style="{ background: 'rgb(249,246,238)' }"
       empty-text="暂无数据"
+      @select="changeBoxSelect"
+      @select-all="changeAllSelect"
     >
       <!-- @selection-change="handleSelectionChange" -->
-      <el-table-column v-if="showBox" type="selection" width="55" />
+      <el-table-column
+        v-if="showBox"
+        type="selection"
+        width="55"
+      />
       <el-table-column
         v-if="isShowIndex"
         type="index"
@@ -137,6 +143,12 @@ export default {
         return 'row'
       }
       return ''
+    },
+    changeBoxSelect(row) { // 单选框
+      this.$emit('changeSelect', row)
+    },
+    changeAllSelect(selection) { // 复选框
+      this.$emit('changeallSelect', selection)
     }
   }
 }
