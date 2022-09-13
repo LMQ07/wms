@@ -44,7 +44,7 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
-          width="150"
+          width="200"
           align="center"
           :filters="item.options"
           :filter-method="filterCheck"
@@ -54,7 +54,7 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
-          width="150"
+          width="200"
           align="center"
           :sortable="item.prop == 'createTime' || item.prop == 'planCheckTime' ? true : false"
         />

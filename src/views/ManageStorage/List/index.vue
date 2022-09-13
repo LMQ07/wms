@@ -229,6 +229,9 @@ export default {
       this.dialogVisible = true
     },
     async createCheckTasks() {
+      if (!this.$refs.table.multipleSelection.length) {
+        return this.$message.error('请勾选')
+      }
       const arr = this.$refs.table.multipleSelection.map(ele => {
         return ele.id
       })
@@ -236,6 +239,7 @@ export default {
       console.log(data)
       this.data = data
       this.dialogVisible = true
+      this.$refs.table.$refs.table.clearSelection()
     }
   }
 }

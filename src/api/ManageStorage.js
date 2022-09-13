@@ -89,3 +89,65 @@ export function getStock(params) {
     params
   })
 }
+
+//! 盘点任务
+
+// 分页查询盘点任务明细
+export function getCheckTaskList(params) {
+  return serviceIps({
+    url: 'checkTask/pageDetail',
+    params
+  })
+}
+
+// 分配盘点任务
+export function distributeCheckTask(data) {
+  return serviceIps({
+    url: 'checkTask/distribute',
+    method: 'PUT',
+    data
+  })
+}
+
+// 查询全部盘点任务
+export function getAllCheckTask(params) {
+  return serviceIps({
+    url: 'checkTask/list',
+    params
+  })
+}
+
+// 盘点完成
+export function checkTaskComplete(data) {
+  return serviceIps({
+    url: 'checkTask/complete',
+    method: 'PUT',
+    data
+  })
+}
+
+// 生成损益单
+export function increaseDecrease(data) {
+  return serviceIps({
+    url: 'checkTask/increaseDecrease',
+    method: 'POST',
+    data
+  })
+}
+
+// 生成复盘
+export function createTask(data) {
+  return serviceIps({
+    url: 'checkTask/task',
+    method: 'POST',
+    data
+  })
+}
+
+// 损益单明细
+export function increaseDecreaseInfo(params) {
+  return serviceIps({
+    url: 'increaseDecrease/pageDetail',
+    params
+  })
+}

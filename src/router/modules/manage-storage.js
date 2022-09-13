@@ -32,6 +32,12 @@ export default {
     meta: { title: '盘点任务', icon: 'dashboard' }
 
   }, {
+    path: 'list-task/details/:id',
+    name: 'list-task/details',
+    component: () => import('@/views/ManageStorage/ListTask/editCheckTask'),
+    meta: { title: '编辑盘点', icon: 'dashboard' }
+
+  }, {
     path: 'storage-lose-profit',
     name: 'storage-lose-profit',
     component: () => import('@/views/ManageStorage/StorageLoseProfit'),

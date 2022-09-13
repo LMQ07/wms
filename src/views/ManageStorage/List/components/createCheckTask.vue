@@ -6,7 +6,8 @@
     :before-close="handleClose"
   >
     <div class="checkTaskInfo">
-      <h3 v-if="results.length"> {{ results.length }}个盘点任务生成成功! {{ errors.length }}个盘点任务生成失败</h3>
+      <h3 v-if="results.length && errors.length"> {{ results.length }}个盘点任务生成成功! {{ errors.length }}个盘点任务生成失败</h3>
+      <h3 v-if="results.length && !errors.length"> {{ results.length }}个盘点任务生成成功!</h3>
       <h3 v-else>{{ errors.length }}个盘点任务生成失败</h3>
       <p v-if="results.length !==0" style="color: #ffb201">盘点任务编号如下，请在盘点任务中查看</p>
     </div>
