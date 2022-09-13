@@ -15,14 +15,23 @@
                 v-if="item.type == 'select'"
                 v-model="form[item.prop]"
                 placeholder="请选择活动区域"
+                clearable
               >
                 <el-option
                   v-for="item1 in item.children"
                   :key="item1.prop"
                   :label="item1.label"
                   :value="item1.value"
+                  clearable
                 />
               </el-select>
+              <el-cascader
+                v-else-if="item.type == 'cascader'"
+                v-model="form[item.prop]"
+                :options="options"
+                @expand-change="expandChange"
+                @change="handleChange"
+              />
               <el-input
                 v-else
                 v-model="form[item.prop]"
@@ -45,17 +54,23 @@ export default {
   name: 'SearchCard',
   props: {
     config: {
-      type: Array
+      type: Array,
+      required: true
+    },
+    options: {
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
-      form: {}
+      form: {
+      }
     }
   },
   methods: {
     resetForm() {
-      this.$parent.getwarehouseList()
+      this.$parent.search()
       this.$refs.formRef.resetFields()
       this.form = {}
     },
@@ -66,6 +81,14 @@ export default {
         console.log(1)
         this.$emit('getFormData', this.form)
       }
+    },
+    expandChange(val) {
+      console.log(val)
+      this.$emit('getWarehouseArea', val[0])
+    },
+    handleChange(val) {
+      console.log(val)
+      this.form.areaId = val[1]
     }
   }
 }

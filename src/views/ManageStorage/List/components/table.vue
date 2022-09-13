@@ -12,14 +12,17 @@
       :row-class-name="tableRowClassName"
       :header-cell-style="{ background: 'rgb(249,246,238)' }"
       empty-text="暂无数据"
+      @selection-change="handleSelectionChange"
     >
+      >
       <!-- @selection-change="handleSelectionChange" -->
-      <el-table-column v-if="showBox" type="selection" width="55" />
+      <el-table-column v-if="showBox" type="selection" width="55" align="center" />
       <el-table-column
         v-if="isShowIndex"
         type="index"
         label="序号"
         width="80"
+        align="center"
       />
       <template v-for="(item, index) in thead">
         <el-table-column
@@ -27,6 +30,9 @@
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          fixed="right"
+          width="250"
+          align="center"
         >
           <!-- :fixed="thead.length == index ? 'right' : 'false'" -->
           <template v-slot="row">
@@ -34,10 +40,23 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-else-if="item.filter"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          width="150"
+          align="center"
+          :filters="item.options"
+          :filter-method="filterCheck"
+        />
+        <el-table-column
           v-else
           :key="index"
           :prop="item.prop"
           :label="item.label"
+          width="150"
+          align="center"
+          :sortable="item.prop == 'createTime' || item.prop == 'planCheckTime' ? true : false"
         />
       </template>
     </el-table>
@@ -105,7 +124,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      multipleSelection: []
+    }
   },
   watch: {
     isChecked(val) {
@@ -127,6 +148,25 @@ export default {
         return 'row'
       }
       return ''
+    },
+    filterCheck(value, row) {
+    //   console.log(value, row)
+    //   console.log(row.status === value)
+      if (row.status === value) {
+        return row.status === value
+      }
+      if (row.reason === value) {
+        return row.reason === value
+      }
+      if (row.dimension === value) {
+        return row.dimension === value
+      }
+      if (row.type === value) {
+        return row.type === value
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     }
   }
 }

@@ -1,6 +1,6 @@
-import  {asyncRoutes,constantRoutes} from '@/router'
+import { asyncRoutes, constantRoutes } from '@/router'
 const state = {
-  routes:[...constantRoutes,...asyncRoutes]
+  routes: [...constantRoutes, ...asyncRoutes]
 }
 const mutations = {}
 const actions = {}
