@@ -37,7 +37,7 @@
             <el-button class="look" @click="deitBtn(row)">修改详情</el-button>
           </el-col>
           <el-col :span="8">
-            <el-button class="look" style="padding: 12px 5px;">生成拣货任务</el-button>
+            <el-button class="look" style="padding: 12px 5px;" @click="picking(row)">生成拣货任务</el-button>
           </el-col>
           <el-col :span="8">
             <el-button class="look" @click="cancelBtn(row)">取消</el-button>
@@ -46,11 +46,37 @@
         <el-button v-else class="look" @click="look(row)">查看详情</el-button>
       </template>
     </Table>
+    <!-- 生成拣货任务 -->
+    <el-dialog
+      title="生成拣货任务"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <div class="body">
+        <div class="spanSubTitle">
+          {{ pickingList.length }}个拣货任务生成失败！
+        </div>
+        <div class="divFailureMsg">
+          拣货任务生成失败原因如下
+        </div>
+        <div
+          v-for="(item,index) in pickingList"
+          :key="index"
+          class="divItemList"
+        >
+          {{ item }}
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" class="okBtn" round @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getOutBoundList, cancel } from '@/api/storageOut'
+import { getOutBoundList, cancel, getPicking } from '@/api/storageOut'
 export default {
   data() {
     return {
@@ -97,7 +123,6 @@ export default {
           prop: 'planOutTime',
           width: '170',
           sortable: true
-
         },
         {
           label: '货品数量',
@@ -137,7 +162,9 @@ export default {
       ],
       list: [],
       total: 0,
-      pageSizes: [10, 20, 30, 40]
+      pageSizes: [10, 20, 30, 40],
+      dialogVisible: false,
+      pickingList: []
     }
   },
   created() {
@@ -181,7 +208,7 @@ export default {
     },
     // 查看操作
     look(row) {
-      console.log(row)
+      // console.log(row)
       this.$router.push(`list-detail/${row.id}`)
     },
     changePage(val) {
@@ -210,11 +237,11 @@ export default {
         confirmButtonClass: 'search-bt'
       }).then(async() => {
         try {
-          const res = await cancel({
+          await cancel({
             id: row.id,
             status: row.status
           })
-          console.log(res)
+          // console.log(res)
           this.getOutBoundList()
           this.$message.success('取消成功')
         } catch (e) {
@@ -232,6 +259,27 @@ export default {
     deitBtn(row) {
       // console.log(row)
       this.$router.push(`/manage-storage-out/list-out/details/${row.id}`)
+      // 点击修改详情的时候 新增出库单的那个title要变成编辑出库单
+      const index = this.$store.state.app.navArr.length - 1
+      this.$store.commit('app/EDIT_NAVBARITEM', { index, title: '编辑出库单' })
+    },
+    async picking(row) { // 生成拣货任务
+      // console.log(row)
+      const arr = []
+      arr.push(row.id)
+      // console.log(arr)
+      try {
+        const { data } = await getPicking(arr)
+        // console.log(data)
+        this.pickingList = data.errors
+        // console.log(this.pickingList)
+      } catch (e) {
+        console.log(e)
+      }
+      this.dialogVisible = true
+    },
+    handleClose() {
+      this.dialogVisible = false
     }
   }
 }
@@ -251,6 +299,54 @@ export default {
 }
 .search-btn {
   background-color: #ffb200;
+}
+.okBtn {
+  background-color: #ffb200;
+  border: #ffb200;
+  color: #000;
+}
+.body {
+  background: #f9f9f9;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 23px;
+  padding: 21px 20px 50px 21px;
+
+  .spanSubTitle {
+    height: 24px;
+    font-size: 16px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #332929;
+    line-height: 24px;
+  }
+
+  .divFailureMsg{
+    color: #d9021c;
+    height: 22px;
+    font-size: 14px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    line-height: 22px;
+    margin-top: 11px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .divItemList{
+    font-size: 14px;
+    font-family: PingFangSC,PingFangSC-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #b5abab;
+    line-height: 22px;
+    padding-right: 10px;
+    text-align: left;
+  }
 }
 
 </style>

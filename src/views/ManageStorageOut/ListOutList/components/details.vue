@@ -223,8 +223,7 @@ export default {
         ],
         license: [{ required: true, message: '请输入车牌号', trigger: 'blur' }],
         receiverName: [{ required: true, message: '请输入收货人名字', trigger: 'blur' }]
-      },
-      active: 0
+      }
     }
   },
   created() {
@@ -281,7 +280,7 @@ export default {
     async getOwner() { // 货主
       try {
         const { data } = await getOwner()
-        console.log(data)
+        // console.log(data)
         data.forEach(ele => {
           const obj = { id: ele.id, name: ele.name }
           this.personName.push(obj)
@@ -294,8 +293,8 @@ export default {
     },
     async getAddOutbound() {
       try {
-        const res = await getAddOutbound(this.formData)
-        console.log(res)
+        await getAddOutbound(this.formData)
+        // console.log(res)
         this.$message.success('恭喜你，提交成功！')
       } catch (e) {
         console.log(e)
@@ -307,15 +306,17 @@ export default {
         if (vali) {
           if (this.active++ > 2) this.active = 0
         }
-        console.log(this.active)
+        // console.log(this.active)
         if (this.active === 2) {
           this.getAddOutbound()
         }
       })
     },
     back() {
-      // console.log(this.active)
-      if (this.active-- === 0) {
+      console.log(this.active)
+      if (this.active > 0) {
+        this.active -= 1
+      } else if (this.active === 0) {
         this.$router.back()
       }
     },

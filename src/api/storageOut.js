@@ -117,3 +117,12 @@ export function getDetails(id) {
     url: `outbound/detail/${id}`
   })
 }
+
+// 生成波次
+export function getPicking(data) {
+  return serviceIps({
+    url: 'outbound/picking',
+    method: 'POST',
+    data
+  })
+}
