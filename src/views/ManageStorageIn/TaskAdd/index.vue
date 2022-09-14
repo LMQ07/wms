@@ -31,7 +31,7 @@ export default {
       configTitle: [
         { label: '上架编号', prop: 'code' },
         { label: '入库单号', prop: 'receiptCode' },
-        { label: '货主名称', prop: 'ownerName' }
+        { label: '货主名称', prop: 'ownerName' },
       ],
       thead: [
         { label: '上架任务编号', prop: 'code' },
@@ -42,36 +42,45 @@ export default {
         { label: '库区名称', prop: 'areaName' },
         { label: '负责人', prop: 'personName' },
         {
-          label: '上架状态', prop: 'status', slotName: 'status',
-          filters: [{ 'text': '待分配', 'value': '1' },
-            { 'text': '收货中', 'value': '2' },
-            { 'text': '收货完成', 'value': '4' },
-            { 'text': '已取消', 'value': '3' }],
+          label: '上架状态',
+          prop: 'status',
+          slotName: 'status',
+          filters: [
+            { text: '待分配', value: '1' },
+            { text: '收货中', value: '2' },
+            { text: '收货完成', value: '4' },
+            { text: '已取消', value: '3' },
+          ],
           filterMethod: (value, row, column) => {
             console.log(value, row, column)
             const property = column['property'] // status
             return row[property] === parseInt(value)
-          }
-
+          },
         },
         { label: '货品数量', prop: 'planNum' },
         { label: '实收总数', prop: 'realNum' },
         { label: '上架数量', prop: 'groundingNum' },
         { label: '差异总数', prop: 'differenceNum' },
         { label: '收货完成时间', prop: 'completionTime', sortable: true },
-        { label: '操作', slotName: 'action', prop: 'code', fixed: 'right', width: '200' }
+        {
+          label: '操作',
+          slotName: 'action',
+          prop: 'code',
+          fixed: 'right',
+          width: '200',
+        },
       ],
       search: {
         code: '',
         receiptCode: '',
         ownerName: '',
         size: 10,
-        current: 1
+        current: 1,
       },
       showBoxB: false,
       list: [],
       total: 0,
-      pageSizes: [10, 20, 30, 40]
+      pageSizes: [10, 20, 30, 40],
     }
   },
   created() {
@@ -133,11 +142,10 @@ export default {
     vewDetails(row) {
       console.log(row.id)
       this.$router.push({
-        path: `/manage-storage-in/list-in/task-add/sure/${row.id}/detail`,
-        params: row
+        path: `/manage-storage-in/list-in/task-add/sure/${row.masterId}/detail`,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

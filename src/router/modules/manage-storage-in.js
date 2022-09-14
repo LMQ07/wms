@@ -42,6 +42,13 @@ export default {
     component: () => import('@/views/ManageStorageIn/taskDetail'),
     meta: { title: '上架详情', icon: 'dashboard' },
     hidden: true
+  },
+  // 收货任务的查看详情
+  {
+    path: '/manage-storage-in/list-in/task-receive/sure/:id/detail',
+    component: () => import('@/views/ManageStorageIn/TaskReceive/components/index.vue'),
+    meta: { title: '任务详情', icon: 'dashboard' },
+    hidden: true
   }
   ]
 }

@@ -15,12 +15,7 @@
     >
       <!-- @selection-change="handleSelectionChange" -->
       <el-table-column v-if="showBox" type="selection" width="55" />
-      <el-table-column
-        v-if="isShowIndex"
-        type="index"
-        label="序号"
-        width="80"
-      />
+      <el-table-column v-if="isShowIndex" type="index" label="序号" width="80" />
       <template v-for="(item, index) in thead">
         <el-table-column
           v-if="item.slotName"
@@ -71,48 +66,48 @@ export default {
   props: {
     thead: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     tableDate: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     totalCount: {
       type: [String, Number],
-      default: 0
+      default: 0,
     },
     currentPage: {
       type: [String, Number],
-      default: 1
+      default: 1,
     },
     total: {
       type: [Number, String],
-      default: 1
+      default: 1,
     },
     isShowPage: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isShowIndex: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showBox: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isChecked: {
       type: Boolean,
-      default: true
+      default: true,
     },
     pageSizes: {
       type: Array,
-      default: () => [1, 5, 10, 15]
+      default: () => [1, 5, 10, 15],
     },
     pageSize: {
       type: [Number, String],
-      default: 10
-    }
+      default: 10,
+    },
   },
   data() {
     return {}
@@ -122,7 +117,7 @@ export default {
       if (!val) {
         this.$refs.table.clearSelection()
       }
-    }
+    },
   },
   methods: {
     handleSizeChange(val) {
@@ -137,8 +132,8 @@ export default {
         return 'row'
       }
       return ''
-    }
-  }
+    },
+  },
 }
 </script>
 

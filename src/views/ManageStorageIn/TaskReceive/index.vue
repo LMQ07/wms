@@ -50,16 +50,31 @@ export default {
         { label: '收货任务编号', prop: 'code' },
         { label: '入库单号', prop: 'receiptCode' },
         { label: '创建人', prop: 'createName' },
-        { label: '创建时间', prop: 'createTime' },
+        { label: '创建时间', prop: 'createTime', sortable: true },
         { label: '货主名称', prop: 'ownerName' },
         { label: '仓库名称', prop: 'warehouseName' },
         { label: '库区名称', prop: 'areaName' },
         { label: '预计到货数', prop: 'planNum' },
-        { label: '收货状态', prop: 'status', slotName: 'status' },
+        {
+          label: '收货状态',
+          prop: 'status',
+          slotName: 'status',
+          filters: [
+            { text: '待分配', value: '1' },
+            { text: '收货中', value: '2' },
+            { text: '收货完成', value: '4' },
+            { text: '已取消', value: '3' },
+          ],
+          filterMethod: (value, row, column) => {
+            console.log(value, row, column)
+            const property = column['property'] // status
+            return row[property] === parseInt(value)
+          },
+        },
         { label: '收货人', prop: 'receiverName' },
         { label: '实收总数', prop: 'realNum' },
         { label: '收货差异', prop: 'differenceNum' },
-        { label: '收货完成时间', prop: 'completionTime' },
+        { label: '收货完成时间', prop: 'completionTime', sortable: true },
         {
           label: '操作',
           slotName: 'action',
@@ -132,15 +147,14 @@ export default {
     },
     vewDetails(row) {
       this.$router.push({
-        path: `/manage-storage-in/list-in/list/list-detail/${row.id}`,
-        query: row,
+        path: `/manage-storage-in/list-in/task-receive/sure/${row.masterId}/detail`,
       })
     },
   },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .warehousing {
   .importantButton:hover {
     background-color: #347850 !important;

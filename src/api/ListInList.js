@@ -47,5 +47,20 @@ export function getWarehouse(params) {
 export function getOwnerList() {
   return serviceApi({
     url: '/owner/list'
-  })
-}
+  })}
+// 分页查询入库清单明细
+export function getPagingList(params) {
+  return serviceIps({
+    url: '/receiptList/pageDetail',
+    method: 'GET',
+    params
+  })}
+  
+  // 查询全部库位
+
+  export function getLocation(params) {
+    return serviceApi({
+      url: '/location/list',
+      method: 'GET',
+      params
+    })}

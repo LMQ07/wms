@@ -26,6 +26,7 @@
                 type="datetime"
                 placeholder="选择日期时间"
                 default-time="00:00:00"
+                style="width: 90%;"
               />
             </el-form-item>
           </el-col>

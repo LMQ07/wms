@@ -34,11 +34,12 @@
       </div>
     </div>
 
-    <dialogeVue />
+    <dialogeVue :showDialog.sync="showDialogBtn" v-if="RowObj" :rowOBj="RowObj" />
   </div>
 </template>
 
 <script>
+import { getPagingList } from '@/api/ListInList'
 import dialogeVue from './components/dialoge.vue'
 export default {
   components: { dialogeVue },
@@ -61,12 +62,39 @@ export default {
           width: '200',
         },
       ],
+      showDialogBtn: false,
+      RowObj: '',
       list: [],
       pageSizes: [10, 20, 30, 40],
       total: 0,
+      id: this.$route.params.id,
+      page: {
+        masterId: this.$route.params.id,
+        current: 1,
+        size: 10,
+      },
     }
   },
+  created() {
+    this.getPagingList()
+  },
   methods: {
+    async getPagingList() {
+      try {
+        // console.log('minanyi', this.page)
+        const { data } = await getPagingList(this.page)
+        // console.log(data)
+        this.list = data.records
+        this.total = data.total * 1
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    vewDetails(row) {
+      this.RowObj = row
+      console.log('hong11', this.RowObj)
+      this.showDialogBtn = true
+    },
     // 返回按钮
     returnFn() {
       this.$router.back()
@@ -82,8 +110,8 @@ export default {
   box-shadow: 0 0 6px 0 rgb(144 142 142 / 17%);
   min-height: 309px;
   .progress {
-    padding: 32px 0 40px 20px;
-    height: 72px;
+    padding: 32px 0 40px 0px;
+    height: 500px;
   }
 }
 .buttonBox {
@@ -91,6 +119,9 @@ export default {
   margin: -20px -30px -5px;
   border-top: 1px solid #f5efee;
   text-align: center;
+  .importantButton {
+    margin-top: 20px;
+  }
   .importantButton:hover {
     background-color: #f4b53f !important;
   }
