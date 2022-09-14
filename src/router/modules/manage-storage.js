@@ -4,7 +4,7 @@ export default {
   component: Layout,
   name: 'manage-storage',
   redirect: '/manage-storage/list',
-  meta: { title: '货主管理', icon: 'dashboard' },
+  meta: { title: '库内管理', icon: 'dashboard' },
   children: [{
     path: 'list',
     name: 'list',

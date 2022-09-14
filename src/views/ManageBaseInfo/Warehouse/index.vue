@@ -36,7 +36,7 @@
 import {
   getwarehouseList,
   editWareHouse,
-  delWareHouse,
+  delWareHouse
 } from '@/api/manageBaseInfo'
 
 export default {
@@ -57,9 +57,9 @@ export default {
           slotName: 'type'
         },
         {
-          prop: "location",
-          label: "省/市/区",
-          width: "160",
+          prop: 'location',
+          label: '省/市/区',
+          width: '160'
         },
         {
           prop: 'address',
@@ -83,21 +83,21 @@ export default {
           label: '负责人'
         },
         {
-          prop: "phone",
-          label: "联系电话",
-          width: "130",
+          prop: 'phone',
+          label: '联系电话',
+          width: '130'
         },
         {
-          prop: "updateTime",
-          label: "更新时间",
-          width: "150",
+          prop: 'updateTime',
+          label: '更新时间',
+          width: '150'
         },
         {
-          label: "操作",
-          slotName: "operate",
-          fixed: "right",
-          width: "150",
-        },
+          label: '操作',
+          slotName: 'operate',
+          fixed: 'right',
+          width: '150'
+        }
       ],
       tableData: [],
       total: '',
@@ -107,9 +107,9 @@ export default {
         { label: '仓库编号', prop: 'like_code' },
         { label: '仓库名称', prop: 'like_name' },
         {
-          label: "仓库状态",
-          prop: "status",
-          type: "select",
+          label: '仓库状态',
+          prop: 'status',
+          type: 'select',
           children: [
             { label: '全部', value: null },
             { label: '停用', value: 0 },
@@ -120,16 +120,16 @@ export default {
     }
   },
   created() {
-    this.getwarehouseList();
+    this.getwarehouseList()
     // this.getCode();
   },
   methods: {
     async getwarehouseList(current = 1, size = 10, form) {
       const { data } = await getwarehouseList({ current, size, ...form })
       // console.log(data);
-      this.tableData = data.records;
-      this.total = parseInt(data.total);
-      this.pageSize = data.size;
+      this.tableData = data.records
+      this.total = parseInt(data.total)
+      this.pageSize = data.size
       // console.log(res);
     },
     formateText(type) {
@@ -144,75 +144,75 @@ export default {
       }
     },
     changeSize(val) {
-      this.pageSize = val;
-      this.getwarehouseList(1, val);
+      this.pageSize = val
+      this.getwarehouseList(1, val)
     },
     changePage(val) {
       this.getwarehouseList(val, this.pageSize)
     },
     searchData(form) {
-      this.getwarehouseList(1, 10, form);
+      this.getwarehouseList(1, 10, form)
     },
     getCode() {
       // console.log(res);
-      this.$router.push("/manage-base-info/warehouse/details/null");
+      this.$router.push('/manage-base-info/warehouse/details/null')
     },
     editWareHouse(row) {
-      this.$store.commit("manageBaseInfo/SET_DETAILS", row);
-      this.$router.push(`/manage-base-info/warehouse/details/${row.id}`);
-      const index = this.$store.state.app.navArr.length - 1;
-      this.$store.commit("app/EDIT_NAVBARITEM", { index, title: "修改仓库" });
+      this.$store.commit('manageBaseInfo/SET_DETAILS', row)
+      this.$router.push(`/manage-base-info/warehouse/details/${row.id}`)
+      const index = this.$store.state.app.navArr.length - 1
+      this.$store.commit('app/EDIT_NAVBARITEM', { index, title: '修改仓库' })
       // console.log(row);
     },
     editWareHouseStatus(row) {
       this.$confirm(
-        `确定要${row.status ? "停用" : "启用"}：${row.name} 吗？`,
-        `确认${row.status ? "停用" : "启用"}`,
+        `确定要${row.status ? '停用' : '启用'}：${row.name} 吗？`,
+        `确认${row.status ? '停用' : '启用'}`,
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
       )
-        .then(async () => {
-          const status = row.status ? "0" : "1";
-          await editWareHouse({ id: row.id, status });
-          this.getwarehouseList();
+        .then(async() => {
+          const status = row.status ? '0' : '1'
+          await editWareHouse({ id: row.id, status })
+          this.getwarehouseList()
           this.$message({
-            type: "success",
-            message: "修改成功!",
-          });
+            type: 'success',
+            message: '修改成功!'
+          })
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消修改",
-          });
-        });
+            type: 'info',
+            message: '已取消修改'
+          })
+        })
     },
     async delWareHouse(row) {
       this.$confirm(`确定要删除：${row.name} 吗？`, `确定删除`, {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          await delWareHouse({ ids: [row.id] });
-          this.getwarehouseList();
+        .then(async() => {
+          await delWareHouse({ ids: [row.id] })
+          this.getwarehouseList()
           this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
+            type: 'success',
+            message: '删除成功!'
+          })
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
-  },
-};
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    }
+  }
+}
 </script>
 
 <style>

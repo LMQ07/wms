@@ -11,7 +11,12 @@
         >
           <el-col v-for="item in config" :key="item.prop" :span="8">
             <el-form-item :label="item.label">
-              <el-select v-if="item.type == 'select'" v-model="form[item.prop]" placeholder="请选择">
+              <el-select
+                v-if="item.type == 'select'"
+                v-model="form[item.prop]"
+                placeholder="请选择活动区域"
+                @change="changeValue($event,item.prop)"
+              >
                 <el-option
                   v-for="item1 in item.children"
                   :key="item1.prop"
@@ -50,6 +55,9 @@ export default {
     }
   },
   methods: {
+    changeValue($event, prop) {
+      this.$emit('changeValue', $event, prop)
+    },
     resetForm() {
       this.$emit('reset')
       this.$refs.formRef.resetFields()

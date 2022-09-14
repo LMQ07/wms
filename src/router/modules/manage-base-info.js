@@ -21,7 +21,12 @@ export default {
     name: 'location',
     component: () => import('@/views/ManageBaseInfo/Location'),
     meta: { title: '库位管理', icon: 'dashboard' }
-
+  }, {
+    path: 'location/detail/:id',
+    name: 'AddLocation',
+    meta: { title: '新增库位', icon: 'dashboard' },
+    component: () => import('@/views/ManageBaseInfo/AddLocation'),
+    hidden: true
   }, {
     path: 'location-view',
     name: 'location-view',

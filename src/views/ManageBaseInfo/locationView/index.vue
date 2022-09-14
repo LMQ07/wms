@@ -74,7 +74,8 @@
         <div class="smallBox">
           <img src="@/assets/empty.4300e933.png" alt="">
           <p>暂无库区</p>
-          <el-button type="success" round @click="$router.push(`/manage-base-info/location/details/${code}`)">新增库区</el-button>
+          <!-- manage-base-info/location/details/null -->
+          <el-button type="success" round @click="$router.push(`/manage-base-info/area/details/null`)">新增库区</el-button>
         </div>
       </div>
     </div>
