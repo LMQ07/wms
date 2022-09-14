@@ -15,12 +15,7 @@
     >
       <!-- @selection-change="handleSelectionChange" -->
       <el-table-column v-if="showBox" type="selection" width="55" />
-      <el-table-column
-        v-if="isShowIndex"
-        type="index"
-        label="序号"
-        width="80"
-      />
+      <el-table-column v-if="isShowIndex" type="index" label="序号" width="80" />
       <template v-for="(item, index) in thead">
         <el-table-column
           v-if="item.slotName"

@@ -37,16 +37,15 @@ import {
   getwarehouseList,
   editWareHouse,
   delWareHouse,
-} from "@/api/manageBaseInfo";
+} from '@/api/manageBaseInfo'
 
 export default {
   data() {
     return {
       tableLabel: [
         {
-          prop: "code",
-          label: "仓库编码",
-          width: "100",
+          prop: 'code',
+          label: '仓库编码'
         },
         {
           prop: 'name',

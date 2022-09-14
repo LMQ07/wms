@@ -11,11 +11,7 @@
         >
           <el-col v-for="item in config" :key="item.prop" :span="8">
             <el-form-item :label="item.label">
-              <el-select
-                v-if="item.type == 'select'"
-                v-model="form[item.prop]"
-                placeholder="请选择活动区域"
-              >
+              <el-select v-if="item.type == 'select'" v-model="form[item.prop]" placeholder="请选择">
                 <el-option
                   v-for="item1 in item.children"
                   :key="item1.prop"
