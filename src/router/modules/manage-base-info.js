@@ -33,7 +33,18 @@ export default {
     name: 'goods',
     component: () => import('@/views/ManageBaseInfo/Goods'),
     meta: { title: '货品管理', icon: 'dashboard' }
-
+  }, {
+    path: '/manage-base-info/warehouse/details/:id',
+    name: '/details/null',
+    component: () => import('@/views/ManageBusiness/GoodsOwner/components/addShipper.vue'),
+    meta: { title: '新增货主' },
+    hidden: true
+  }, {
+    path: '/manage-base-info/warehouse/detailss/:id',
+    name: '/details/nulls',
+    component: () => import('@/views/ManageBaseInfo/Goods/components/addGoods.vue'),
+    meta: { title: '新增货品' },
+    hidden: true
   }, {
     path: 'goods-type',
     name: 'goods-type',
@@ -42,15 +53,15 @@ export default {
 
   }, {
     path: '/manage-base-info/warehouse/details/:id',
-    name: 'detailsDialog',
+    name: '/details/null',
     component: () => import('@/views/ManageBaseInfo/Warehouse/components/AddWarehouse.vue'),
     meta: { title: '新增仓库' },
-    hidden:true
-},{
-  path:'/manage-base-info/area/details/:id',
-  name:'areaDialog',
-  component: () => import('@/views/ManageBaseInfo/Area/components/AddArea.vue'),
-  meta: { title: '新增库区' },
-  hidden:true
-}]
+    hidden: true
+  }, {
+    path: '/manage-base-info/area/details/:id',
+    name: 'areaDialog',
+    component: () => import('@/views/ManageBaseInfo/Area/components/AddArea.vue'),
+    meta: { title: '新增库区' },
+    hidden: true
+  }]
 }
