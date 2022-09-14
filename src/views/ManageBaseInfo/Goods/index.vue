@@ -156,8 +156,9 @@ export default {
           // cancelButtonText: '取消',
           type: 'warning'
         })
-        await delGoods(id)
-        this.getGoods()
+        await delGoods({ 'ids[]': id })
+        this.$message.success('货品删除成功!')
+        this.getGoods(this.search)
       } catch (e) {
         console.log(e)
       }

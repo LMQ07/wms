@@ -8,11 +8,11 @@ export function getGoods(params) {
   })
 }
 
-export function delGoods(ids) {
+export function delGoods(params) {
   return serviceApi({
-    url: `/goods`,
-    method: 'DEL',
-    ids
+    url: '/goods',
+    method: 'DELETE',
+    params
   })
 }
 
@@ -23,11 +23,10 @@ export function getGoodsCode(HP) {
   })
 }
 
-export function goodsType(params) {
+export function goodsType() {
   return serviceApi({
     url: '/goodsType/vague',
-    method: 'Get',
-    params
+    method: 'Get'
   })
 }
 
@@ -43,5 +42,21 @@ export function editGoods(id) {
   return serviceApi({
     url: `/goods/${id}`,
     method: 'GET'
+  })
+}
+
+export function addGoods(data) {
+  return serviceApi({
+    url: '/goods',
+    method: 'POST',
+    data
+  })
+}
+
+export function getAreaList(params) {
+  return serviceApi({
+    url: '/area/list',
+    method: 'GET',
+    params
   })
 }

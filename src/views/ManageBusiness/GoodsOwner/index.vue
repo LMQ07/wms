@@ -4,7 +4,7 @@
     <Table v-loading="loading" :thead="thead" :table-date="tableDate" :current-page="search.current" :total="total" :page-size="search.size" @changeSize="changeSize" @changePage="changePage">
       <el-button slot="btn" class="btn" @click="$router.push(`/manage-base-info/warehouse/details/${null}`)">新增货主</el-button>
       <template v-slot:operation="{scoped:{row}}">
-        <span class="check">查看详情</span>
+        <span class="check" @click="$router.push(`/manage-business/goods-owner/details/${row.id}`)">查看详情</span>
         <span class="edit" @click="$router.push(`/manage-base-info/warehouse/details/${row.id}`)">编辑</span>
         <span class="del" @click="del(row.id)">删除</span>
       </template>

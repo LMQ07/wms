@@ -11,7 +11,15 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="货品类型" prop="goodsTypeName">
-                <el-input v-model="formData.goodsTypeName" placeholder="请输入内容" suffix-icon="el-icon-search" />
+                <el-autocomplete
+                  v-model="formData.goodsTypeName"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入内容"
+                  style="width:100%"
+                  suffix-icon="el-icon-search"
+
+                  @select="handleSelect"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -26,7 +34,14 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="货主" prop="ownerName">
-                <el-input v-model="formData.ownerName" placeholder="请输入内容" suffix-icon="el-icon-search" />
+                <el-autocomplete
+                  v-model="formData.ownerName"
+                  :fetch-suggestions="querySearch"
+                  placeholder="请输入内容"
+                  style="width:100%"
+                  suffix-icon="el-icon-search"
+                  @select="select"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -74,7 +89,7 @@
               <el-form-item label="指定库区">
                 <el-select v-model="formData.areaName" placeholder="请选择" style="width:100%">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in areaList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -104,7 +119,7 @@
       <el-row class="buttonBox">
         <el-col>
           <el-button class="return" @click="$router.back()">返回</el-button>
-          <el-button class="sure">提交</el-button>
+          <el-button class="sure" @click="submit">提交</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -112,7 +127,7 @@
 </template>
 
 <script>
-import { getGoodsCode, goodsType, goodsOwner, editGoods } from '@/api/goodsManagement'
+import { getGoodsCode, goodsType, goodsOwner, editGoods, addGoods, getAreaList } from '@/api/goodsManagement'
 export default {
   components: { },
   data() {
@@ -149,80 +164,74 @@ export default {
       HP: 'HP',
       inspectionType: [
         {
-          value: '选项1',
+          value: 'BCL',
           label: '不质检'
         },
         {
-          value: '选项2',
+          value: 'QJ',
           label: '全检'
         },
         {
-          value: '选项3',
+          value: 'CJ',
           label: '抽检'
         }
       ],
       temperatureType: [
         {
-          value: '选项1',
+          value: 'CW',
           label: '常温'
         },
         {
-          value: '选项2',
+          value: 'LC',
           label: '冷藏'
         },
         {
-          value: '选项3',
+          value: 'HW',
           label: '恒温'
         }
       ],
       bearingType: [
         {
-          value: '选项1',
+          value: 'ZX',
           label: '重型'
         },
         {
-          value: '选项2',
+          value: 'QX',
           label: '轻型'
         },
         {
-          value: '选项3',
+          value: 'BX',
           label: '中型'
         }
       ],
       params: '',
-      id: ''
+      id: '',
+      goodsTypeList: [], // 货品类型搜索
+      goodsOwnerList: [], // 货主搜索
+      ownerId: '',
+      areaList: []
     }
   },
   async created() {
     this.getGoodsCode()
     // console.log(this.$route.params.ownerId)
-    this.goodsType()
-    this.goodsOwner()
+    // this.goodsType()
+    // this.goodsOwner()
     // this.id = this.$route.params.id
     if (this.$route.params.id !== 'null') {
       const { data } = await editGoods(this.$route.params.id)
       console.log(data)
-      this.formData = data.map(item => {
-        const name = {
-          BCL: '不处理',
-          QJ: '全检',
-          CJ: '抽检',
-          CW: '常温',
-          LC: '冷藏',
-          HW: '恒温',
-          ZX: '重型',
-          QX: '轻型',
-          BX: '中型'
-        }
-        item.inspectionType = name[item.inspectionType]
-        item.temperatureType = name[item.temperatureType]
-        item.bearingType = name[item.bearingType]
-
-        return item
-      })
+      this.ownerId = data.ownerId
+      this.$route.meta.title = '编辑货品'
+      this.formData = data
+      const res = await getAreaList({ ownerId: this.ownerId })
+      console.log(res)
+      this.areaList = res.data.map(item => ({ 'value': item.useType, 'label': item.name }))
+      console.log(this.areaList)
     }
   },
   methods: {
+    // 获取货品编号
     async getGoodsCode() {
       try {
         const res = await getGoodsCode(this.HP)
@@ -232,18 +241,59 @@ export default {
         console.log(e)
       }
     },
+    // 获取货品类型搜索
     async goodsType() {
       try {
-        const res = await goodsType(this.params)
-        console.log(res)
+        const res = await goodsType()
+        // console.log(res)
+        this.goodsTypeList = res.data.map(item => ({ 'value': item.name, 'address': item.id }))
+        // console.log(this.goodsTypeList)
       } catch (e) {
         console.log(e)
       }
     },
+    handleSelect(item) {
+      console.log(item)
+      this.formData.goodsTypeId = item.address
+      this.formData.goodsTypeName = item.value
+    },
+    querySearchAsync(queryString, cb) {
+      this.goodsType()
+      // console.log(queryString)
+      var results = queryString ? this.goodsTypeList.filter(item => { return item.value.indexOf(queryString) !== -1 }) : this.goodsTypeList
+      // console.log(results)
+      cb(results)
+    },
+    // 获取货主搜索
     async goodsOwner() {
       try {
-        const res = await goodsOwner(this.params)
+        const res = await goodsOwner({ params: this.params })
         console.log(res)
+        this.goodsOwnerList = res.data.map(item => ({ 'value': item.name, 'address': item.id }))
+        console.log(this.goodsTypeList)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    select(item) {
+      console.log(item)
+      this.formData.ownerId = item.address
+      this.formData.ownerName = item.value
+    },
+    querySearch(queryString, cb) {
+      this.goodsOwner()
+      console.log(queryString)
+      var results = queryString ? this.goodsOwnerList.filter(item => { return item.value.indexOf(queryString) !== -1 }) : this.goodsOwnerList
+      console.log(results)
+      cb(results)
+    },
+    // 新增
+    async submit() {
+      try {
+        await addGoods(this.formData)
+        // console.log(res)
+        this.$message.success('恭喜你,提交成功!')
+        this.$router.back()
       } catch (e) {
         console.log(e)
       }

@@ -30,23 +30,28 @@ export default {
       thead: [
         {
           prop: 'code',
-          label: '承运商编号'
+          label: '承运商编号',
+          width: 200
         },
         {
           prop: 'name',
-          label: '承运商名称'
+          label: '承运商名称',
+          width: 150
         },
         {
           prop: 'personName',
-          label: '联系人'
+          label: '联系人',
+          width: 150
         },
         {
           prop: 'phone',
-          label: '联系人电话'
+          label: '联系人电话',
+          width: 150
         },
         {
           prop: 'email',
-          label: '联系邮箱'
+          label: '联系邮箱',
+          width: 150
         },
         {
           prop: 'location',
