@@ -10,43 +10,45 @@
       empty-text="暂无数据"
       stripe
     >
-      <el-table-column type="index" width="80" />
-      <el-table-column prop="warehouseName" label="所属仓库" />
-      <el-table-column prop="areaCode" label="库区编码" width="100px" />
-      <el-table-column prop="areaName" label="库区名称" width="160px" />
-      <el-table-column prop="code" label="库位编码" width="100px" />
-      <el-table-column prop="name" label="库位名称" />
-      <el-table-column label="温度类型">
+      <el-table-column type="index" width="80" align="center" />
+      <el-table-column prop="warehouseName" label="所属仓库" align="center" />
+      <el-table-column prop="areaCode" label="库区编码" width="100px" align="center" />
+      <el-table-column prop="areaName" label="库区名称" width="160px" align="center" />
+      <el-table-column prop="code" label="库位编码" width="100px" align="center" />
+      <el-table-column prop="name" label="库位名称" align="center" />
+      <el-table-column label="温度类型" align="center">
         <template slot-scope="{row}">
           {{ row.temperatureType|temperatureType }}
         </template>
       </el-table-column>
-      <el-table-column label="承重类型">
+      <el-table-column label="承重类型" align="center">
         <template slot-scope="{row}">
           {{ row.bearingType|bearingType }}
         </template>
       </el-table-column>
-      <el-table-column label="用途属性" width="150px">
+      <el-table-column label="用途属性" width="150px" align="center">
         <template slot-scope="{row}">
           {{ row.useType|useType }}
         </template>
       </el-table-column>
-      <el-table-column label="停用状态">
+      <el-table-column label="停用状态" align="center">
         <template slot-scope="{row}">
           {{ row.status|status }}
         </template>
       </el-table-column>
-      <el-table-column prop="maxNum" label="承载上限" />
-      <el-table-column prop="updateTime" label="更新时间" width="200px" />
-      <el-table-column label="操作" fixed="right" width="160px">
+      <el-table-column prop="maxNum" label="承载上限" align="center" />
+      <el-table-column prop="updateTime" label="更新时间" width="200px" align="center" />
+      <el-table-column label="操作" fixed="right" width="160px" align="center">
         <template slot-scope="{row}">
-          <el-button type="text" class="textBtnColor">编辑</el-button>
-          <el-button type="text" class="textBtnColor">停用</el-button>
-          <el-button type="text" class="textBtnColor">删除</el-button>
+          <el-button type="text" class="textBtnColor" @click="editLoction(row)">编辑</el-button>
+          <el-button type="text" class="textBtnColor" @click="changeStatus(row)">
+            {{ row.status==1?'停用':'启用' }}
+          </el-button>
+          <el-button type="text" class="textBtnColor" @click="delLocation(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="center">
+    <el-row type="flex" justify="center" class="pagination">
       <el-pagination
         :current-page="current"
         :page-sizes="[10, 20, 30, 40]"
@@ -61,6 +63,7 @@
 </template>
 
 <script>
+import { putLocation, deleteLocation } from '@/api/manageBaseInfo'
 export default {
   name: 'MyTable',
   filters: {
@@ -136,7 +139,6 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log('111', val)
       this.$emit('changeSize', val)
     },
     handleCurrentChange(val) {
@@ -146,6 +148,32 @@ export default {
       }
       page = val
       this.$emit('changePage', page)
+    },
+    changeStatus(row) {
+      const status = row.status == 1 ? 0 : 1
+      const statusNmae = row.status == 1 ? '停用' : '启用'
+      const data = {
+        id: row.id,
+        status
+      }
+      this.$confirm(`确定要${statusNmae}:${row.name}吗?`, `确定${statusNmae}`, {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await putLocation(data)
+        this.$emit('refresh')
+        this.$message.success('状态改变成功')
+      }).catch(() => {
+
+      })
+    },
+    editLoction(row) {
+      this.$router.push(`/manage-base-info/location/detail/${row.id}`)
+    },
+    async delLocation(row) {
+      const res = await deleteLocation({ 'ids[]': row.id })
+      this.$emit('refresh')
     }
   }
 }
@@ -161,5 +189,8 @@ export default {
         td{
             background: #fdfcf9!important;
         }
+    }
+    .pagination{
+        margin-top: 20px;
     }
 </style>

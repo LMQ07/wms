@@ -15,6 +15,7 @@
                 v-if="item.type == 'select'"
                 v-model="form[item.prop]"
                 placeholder="请选择活动区域"
+                @change="changeValue($event,item.prop)"
               >
                 <el-option
                   v-for="item1 in item.children"
@@ -54,6 +55,9 @@ export default {
     }
   },
   methods: {
+    changeValue($event, prop) {
+      this.$emit('changeValue', $event, prop)
+    },
     resetForm() {
       this.$parent.getwarehouseList()
       this.$refs.formRef.resetFields()
