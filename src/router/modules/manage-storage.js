@@ -21,7 +21,8 @@ export default {
     path: 'list-task/details/:id',
     name: 'list-task/details',
     component: () => import('@/views/ManageStorage/ListTask/editCheckTask'),
-    meta: { title: '编辑盘点', icon: 'dashboard' }
+    meta: { title: '编辑盘点', icon: 'dashboard' },
+    hidden: true
 
   }, {
     path: 'storage-lose-profit',
